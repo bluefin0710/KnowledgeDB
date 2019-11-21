@@ -29,7 +29,8 @@ SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1","pythonanywhere.com"]
+STATC_ROOT = os.path.join(BASE_DIR,'static')
+ALLOWED_HOSTS = ['127.0.0.1','.pythonanywhere.com']
 
 
 # Application definition
@@ -72,7 +73,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'dbsite.context_processors.common',
             ],
-            'builtins':[ 
+            'builtins':[
                 'bootstrap4.templatetags.bootstrap4', # ここに追加！
             ],
         },
@@ -95,16 +96,15 @@ WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
 # MySQL Setting
 # import pymysql
 # pymsql.install_as_MySQLdb()
-# 
+#
 DATABASES = {
         'default': {
                 'ENGINE': 'django.db.backends.mysql',
-                 'NAME':'masterdb',
-                 'USER':'root',
-#                 'USER':'nmcmh01', # for pythonanywhere                
+                 'NAME':'nmcmh01$MasterDB',
+                 'USER':'nmcmh01',
                  'PASSWORD':'mysqlroot',
-#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com', # for pythonanywhere
-                 'HOST':'127.0.0.1',
+                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+#                 'HOST':'127.0.0.1',
                  'PORT':'3306',
         }
 }

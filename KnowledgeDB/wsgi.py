@@ -8,9 +8,14 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
+path = '/home/nmcmh01/nmcmh01.pythonanywhere.com/'
+if path not in sys.path:
+    sys.path.append(path)
+
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'KnowledgeDB.settings')
+os.environ('DJANGO_SETTINGS_MODULE', 'KnowledgeDB.settings')
 
 from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'KnowledgeDB.settings')
-
 application = get_wsgi_application()
