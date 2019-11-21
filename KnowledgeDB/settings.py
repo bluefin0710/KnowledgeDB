@@ -81,8 +81,8 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
-WSGI_APPLICATION = 'nmcmh01.pythonanywhere.com.wsgi.application'
+WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
+#WSGI_APPLICATION = 'nmcmh01.pythonanywhere.com.wsgi.application'
 
 
 # Database
