@@ -15,9 +15,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static'),
+#]
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,8 +30,8 @@ SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 DEBUG = True
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
-#ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
+#ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -163,3 +163,7 @@ LOGIN_REDIRECT_URL = 'posts:index_listview'
 
 #LOGIN_REDIRECT_URL = '../../posts/'
 LOGOUT_REDIRECT_URL = '../../'
+
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
