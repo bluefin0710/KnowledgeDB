@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block content %}
+<br/><br/>
+
+<style>
+ .container {
+<!-- border: 1px solid black; -->
+ padding: 1rem;
+ margin: 1rem;
+ font-size: 11px;
+ }
+</style>
+
+<div class="container container-fluid">
+  <div class="row">
+    <main class="col-md-11">
+      <!-- h2 class="mb-4">「{{ subcategory.name }}」の登録一覧</h2 -->
+      {% include "posts/snippets/main_post_list.html" %}
+    </main>
+    <aside class="col-md-1">
+      {% include "posts/snippets/sidebar.html" %}
+    </aside>
+  </div>
+</div>
+
+
+
+{% endblock %}
+ 
+{% block extra_js %}
+
+    {% include "posts/snippets/DataTableSetting.html" %}
+
+{% endblock %}    

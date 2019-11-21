@@ -1,0 +1,39 @@
+
+<script>
+ $(document).ready( function () { 
+ 
+     $('#ListTable').DataTable({
+     'stateSave'   : true,     
+     'paging'      : true,
+     'pageLength'  : 10,
+     'lengthChange': true,
+     'searching'   : true,
+     'ordering'    : true,
+     'info'        : true,
+     'autoWidth'   : false,
+     'scrollX'     : true,
+     'scrollY'     : true,
+     'order'       : [[ 0, 'asc' ]],
+     'language'    : {
+        "decimal":        ".",
+         "emptyTable":     "表示するデータがありません。",
+         "info":           "_START_ ～ _END_ / _TOTAL_ 件中",
+         "infoEmpty":      "0 ～ 0 / 0 件",
+         "infoFiltered":   "(合計 _MAX_ 件からフィルタリングしています)",
+         "infoPostFix":    "",
+         "thousands":      ",",
+         "lengthMenu":     "1ページ _MENU_ 件を表示する",
+         "loadingRecords": "読み込み中...",
+         "processing":     "処理中...",
+         "search":         "絞り込み:",
+         "zeroRecords":    "一致するデータが見つかりません。",
+         "paginate": {
+             "first":      "最初",
+             "last":       "最後",
+             "next":       "次",
+             "previous":   "前"
+             }
+         }
+     });
+});
+</script>

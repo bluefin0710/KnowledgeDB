@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <br>
+  <!-- <h2 class="text-center">＊＊＊＊＊！</h2> -->
+
+  <br /><br />
+  {% load static %}
+  <!-- <img src="{% static 'posts/home.png'%}" class = "img-fluid rounded" style="max-height: 300px;" /> -->
+
+  <hr>
+
+  <h3>最新の投稿</h3>
+
+  {% for post in post.all %}
+<!--
+    <a href ="{% url 'post_detail' post.id %}">{{ post.id }}:  </a>
+    <a href ="{% url 'post_detail' post.id %}">{{ post.subtitle }}</a>
+-->
+    <a href ="{% url 'post_detail' post.id %}">{{ post.id }}:  </a>
+    <a href ="{% url 'post_detail' post.id %}">{{ post.subtitle }}</a>
+    <br />
+    {{ post.category }}　{{ post.subcategory }}　{{ post.state }}
+    <br />
+    {{ post.discoverydate }}　{{ post.discoverydiv }}
+    <br />
+    {{ post.severity }}
+    <br />
+    {{ post.overview }}
+    <br />
+    {{ post.content }}
+    <br /><br />
+
+  {% endfor %}
+
+{% endblock %}

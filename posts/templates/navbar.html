@@ -1,0 +1,43 @@
+        <div class="bs-component">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href={{ BASE_DIR }}"/posts/">技術処理票</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'posts:index_listview' %}" >全一覧表示 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'posts:post_new' %}">新規登録 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'posts:search_listview' %}">詳細検索 <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://m.gisp.nec.com/magportal/SitePages/Home.aspx" target="_blank">MAGNUSポータル</a>
+                        </li>
+                            {% if request.user.is_authenticated %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'posts:logout' %}">ログアウト({{ user }}さんでログイン中) <span class="sr-only">(current)</span></a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'posts:login' %}">ログイン <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'posts:signup' %}">サインアップ <span class="sr-only">(current)</span></a>
+                                </li>
+                            {% endif %}
+                    </ul>  
+<!--
+                    <form class="form-inline my-2 my-lg-0"" action="{% url 'posts:search_post' %}" method="GET">
+                        <input class="form-control mr-sm-2" type="search" name = "q"  value="{{ request.GET.q }}" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">検索</button>
+                    </form>
+-->
+                </div>
+            </nav>
+        </div>

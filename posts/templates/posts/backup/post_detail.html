@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'post_edit' post.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    {% endif %}
+
+    <a href="{% url 'post_edit' post.id %}" class="btn btn-outline-primary btn-sm">編集</a>
+
+<br />
+    <!-- <a href ="{% url 'post_edit' post.id %}">{{ post.id }}</a> -->
+    {{ post.id }}  {{ post.subtitle }}
+    <br />   
+    <P>
+    {{ post.category }}  {{ post.subcategory }}  {{ post.state }}
+    </P><br />
+    {{ post.discoverydate }}  {{ post.discoverydiv }}  {{ post.severity }}
+    <br />
+    {{ post.overview }}
+    <br />
+    {{ post.content }}
+    <br />
+    </P>
+    <P>
+    {{ post.causediv }}
+    <br />
+    {{ post.cause }}
+    <br />
+    {{ post.counterplan }}
+    <br />
+    {{ post.checklist.all }}
+    <br />
+    {{ post.completiondate }}
+    <br />
+    </P>
+{% endblock %}

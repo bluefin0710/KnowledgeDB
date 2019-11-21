@@ -1,0 +1,17 @@
+
+<!-- templates/registration/login.html -->
+{% extends 'registration/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<h2>技術管理票システム ログイン</h2>
+ログアウトしました。WEBブラウザを閉じてください。
+
+再度ログインする際はIDとパスワードを入力してください。
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+{% endblock %}

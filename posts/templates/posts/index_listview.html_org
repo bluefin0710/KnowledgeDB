@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block content %}
+<br/><br/>
+
+<style>
+ .container {
+<!-- border: 1px solid black; -->
+ padding: 1rem;
+ margin: 1rem;
+ font-size: 10px;
+ }
+</style>
+
+<div class="container container-fluid">
+    <div class="row">
+        <main class="col-md-11">
+<!--
+            {% include "posts/snippets/main_post_list.html" %}
+            {% include "posts/snippets/pagination.html" %}
+            {# {% include "posts/snippets/pagination_b.html" %} #}
+-->
+<!-- <br> -->
+    <!-- <h2 class="text-center">＊＊＊＊＊！</h2> -->
+<!--
+<br /><br />
+-->
+    <!-- <img src="{% static 'posts/home.png'%}" class = "img-fluid rounded" style="max-height: 300px;" /> -->
+
+            <hr>
+
+            <br/><br/>
+ 
+            <table id="ListTable" class="table table-striped tagle-bordered">
+                <thead>
+                    <tr>
+                        <th>番号</th>
+                        <th>装置名</th>
+                        <th>大分類</th>
+                        <th>小分類</th>
+                        <th>重大度</th>
+                        <th>状態</th>
+                        <th>発見日</th>
+                        <th>完了日</th>
+                        <th>発見概要</th>
+<!--
+                        <th>発見内容</th>
+                        <th>発見カテゴリ</th>
+                        <th>原因区分</th>
+                        <th>詳細原因</th>
+                        <th>処置内容(対策)</th>
+                        <th>チェックリスト</th>
+-->
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for post in post.all %}
+                    <tr>
+                        <td><a href ="{% url 'posts:post_detail' post.id %}">{{ post.id }}</a></td>
+                        <td>{{ post.equipment }}</a></td>
+                        <td>{{ post.category }}</td>
+                        <td>{{ post.subcategory }}</td>
+                        <td>{{ post.severity }}</td>
+                        <td>{{ post.state }}</td>
+                        <td>{{ post.discoverydate }}</td>
+                        <td>{{ post.completiondate }}</td>
+                        <td>{{ post.overview }}</td>
+<!--
+                        <td>{{ post.discoverydiv }}</td>
+                        <td>{{ post.content }}</td>
+                        <td>{{ post.causediv }}</td>
+                        <td>{{ post.cause }}</td>
+                        <td>{{ post.counterplan }}</td>
+                        <td>{% for check in post.checklist.all %}{{ check }}, {% endfor %}</td>
+-->
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+                <troot>
+                    <tr>
+                        <th>番号</th>
+                        <th>装置名</th>
+                        <th>大分類</th>
+                        <th>小分類</th>
+                        <th>重大度</th>
+                        <th>状態</th>
+                        <th>発見日</th>
+                        <th>完了日</th>
+                        <th>発見概要</th>
+<!--
+                        <th>発見内容</th>
+                        <th>発見カテゴリ</th>
+                        <th>原因区分</th>
+                        <th>詳細原因</th>
+                        <th>処置内容(対策)</th>
+                        <th>チェックリスト</th>
+-->
+                    </tr>
+                </troot>
+            </table>
+
+<!--    <div class="col-6 offset-3 justify-content-center"> -->
+<!--        {% if is_paginated %} -->
+<!--            {% include 'posts/snippets/pagination.html' %} -->
+<!--        {% endif %} -->
+<!--    </div> -->
+        </main>
+
+        <aside class="col-md-1">
+          {% include "posts/snippets/sidebar.html" %}
+        </aside>
+
+    </div>
+</div>
+{% endblock %}
+ 
+{% block extra_js %}
+<script>
+ $(document).ready( function () { 
+ 
+     $('#ListTable').DataTable({
+     'paging'      : true,
+     'pageLength'  : 10,
+     'lengthChange': true,
+     'searching'   : true,
+     'ordering'    : true,
+     'info'        : true,
+     'autoWidth'   : false,
+     'scrollX'     : true,
+     'scrollY'     : true,
+     'order'       : [[ 0, 'asc' ]],
+     'language'    : {
+        "decimal":        ".",
+         "emptyTable":     "表示するデータがありません。",
+         "info":           "_START_ ～ _END_ / _TOTAL_ 件中",
+         "infoEmpty":      "0 ～ 0 / 0 件",
+         "infoFiltered":   "(合計 _MAX_ 件からフィルタリングしています)",
+         "infoPostFix":    "",
+         "thousands":      ",",
+         "lengthMenu":     "1ページ _MENU_ 件を表示する",
+         "loadingRecords": "読み込み中...",
+         "processing":     "処理中...",
+         "search":         "絞り込み:",
+         "zeroRecords":    "一致するデータが見つかりません。",
+         "paginate": {
+             "first":      "最初",
+             "last":       "最後",
+             "next":       "次",
+             "previous":   "前"
+             }
+         }
+     });
+});
+</script>
+{% endblock %}    

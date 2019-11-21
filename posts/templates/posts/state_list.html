@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}状態一覧 | {{ block.super }}{% endblock %}
+{% block description %}状態一覧ページです。{% endblock %}
+
+{% block content %}
+<h1>状態一覧</h1>
+<ul>
+  {% for state in object_list %}
+  <li><a href="{% url 'posts:state_post' state.slug %}">{{ state.name }} ({{ state.num_posts }})</a></li>
+  {% empty %}
+  <li>カテゴリはありません。</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+<!-- posts/category_list.html -->
+

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}機種名称一覧 | {{ block.super }}{% endblock %}
+{% block description %}機種名称一覧ページです。{% endblock %}
+
+{% block content %}
+<h1>機種名称一覧</h1>
+<ul>
+  {% for equipment in object_list %}
+  <li><a href="{% url 'posts:equipment_post' equipment.slug %}">{{ equipment.name }} ({{ equipment.num_posts }})</a></li>
+  {% empty %}
+  <li>機種名称はありません。</li>
+  {% endfor %}
+</ul>
+{% endblock %}

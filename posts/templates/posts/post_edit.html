@@ -1,0 +1,386 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+
+<!--
+{% block extra_script %}
+<script language="JavaScript" type="text/javascript">
+function openWin_equipment(){
+  EquimpentCreatesubWin = window.open('{% url 'posts:popup_equipment_create' %}','EquimpentCreatesubWin','width=400,height=200,
+  scrollbars=no,status=no,toolbar=no,location=no,menubar=no,resizable=yes');
+  EquimpentCreatesubWin.focus();
+}
+
+function openWin_subcategory(){
+  SubcategoryCreatesubWin = window.open('{% url 'posts:popup_subcategory_create' %}','SubcategoryCreatesubWin','width=400,height=200,
+  scrollbars=no,status=no,toolbar=no,location=no,menubar=no,resizable=yes');
+  SubcategoryCreatesubWin.focus();
+}
+</script>
+{% endblock %}
+-->
+
+{% block content %}
+
+<style>
+ .container {
+<!-- border: 1px solid black; -->
+ padding: 1rem;
+ margin: 1rem;
+ font-size: 14px;
+ }
+</style>
+
+<script>
+        function add_equipment(name, pk){
+            var select = document.getElementById('id_equipment');
+            <!-- // <option value="pk">選択肢名</option> をつくる -->
+            var option = document.createElement('option');
+            option.setAttribute('value', pk);
+            option.innerHTML = name;
+
+            <!-- // カテゴリの先頭に追加し、選択済みにする -->
+            select.add(option,0);
+            select.options[0].selected= true;
+        }
+
+        function add_subcategory(name, pk){
+            var select = document.getElementById('id_subcategory');
+            <!-- // <option value="pk">選択肢名</option> をつくる -->
+            var option = document.createElement('option');
+            option.setAttribute('value', pk);
+            option.innerHTML = name;
+
+            <!-- // カテゴリの先頭に追加し、選択済みにする -->
+            select.add(option,0);
+            select.options[0].selected= true;
+        }
+
+</script>
+
+<div class="container container-fluid">
+    <div class="row">
+    <main class="col-md-8">
+
+    <h3>編集</h3>
+
+
+{% if user.is_authenticated %}
+
+    <form action="" method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+
+<!-- tableによるフォーム要素の取り出し　--
+        <table>
+            {{ form.as_table }}
+        </table>
+-->
+
+<!-- for ループによるフォーム要素の取り出し --
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <div class="field">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}
+                <span class="helptext">{{ field.help_text }}</span>
+            {% endif %}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+-->
+
+<!-- 手動によるフォーム要素の取り出し -->
+    {{ form.non_field_errors }}
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.equipment.label_tag }}
+            <span class="helptext">{{ form.equipment.help_text }}</span>
+            {{ form.equipment }}
+            {{ form.equipment.errors }}
+        </div>
+        <!-- equipment追加ポップアップウインドウボタン -->
+        装置名称追加：
+        <a href="javascript:void(0);" onclick="window.open('{% url 'posts:popup_equipment_create' %}','subwin','width=400,height=200');">ポップアップ</a>
+        ／
+        <a href="{% url 'posts:popup_equipment_create' %}" target="_blank">別ウインドウ(タブ)</a>
+        <!-- a href="javascript:void(0);" onclick="openWin_equipment()">+</a -->
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.category.label_tag }}
+            <span class="helptext">{{ form.category.help_text }}</span>
+            {{ form.category }}
+            {{ form.category.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.subcategory.label_tag }}
+            <span class="helptext">{{ form.subcategory.help_text }}</span>
+            {{ form.subcategory }}
+            {{ form.subcategory.errors }}
+        </div>
+        <!-- subcategory追加ポップアップウインドウボタン -->
+        サブカテゴリ追加：
+        <a href="javascript:void(0);" onclick="window.open('{% url 'posts:popup_subcategory_create' %}','subwin','width=400,height=200');">ポップアップ</a>
+        ／
+        <a href="{% url 'posts:popup_subcategory_create' %}" target="_blank">別ウインドウ(タブ)</a>
+        <!-- a href="javascript:void(0);" onclick="openWin_subcategory()">+</a -->
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.state.label_tag }}
+            <span class="helptext">{{ form.state.help_text }}</span>
+            {{ form.state }}
+            {{ form.state.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.discoverydate.label_tag }}
+            <span class="helptext">{{ form.discoverydate.help_text }}</span>
+            {{ form.discoverydate }}
+            {{ form.discoverydate.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.discoverydiv.label_tag }}
+            <span class="helptext">{{ form.discoverydiv.help_text }}</span>
+            {{ form.discoverydiv }}
+            {{ form.discoverydiv.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.severity.label_tag }}
+            <span class="helptext">{{ form.severity.help_text }}</span>
+            {{ form.severity }}
+            {{ form.severity.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.overview.label_tag }}
+            <span class="helptext">{{ form.overview.help_text }}</span>
+            {{ form.overview }}
+            {{ form.overview.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.content.label_tag }}
+            <span class="helptext">{{ form.content.help_text }}</span>
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+        </div>
+<!--
+        <br>
+        <div class="field">
+            {{ form.actual_file1.label_tag }}
+            {{ form.actual_file1 }}
+            <span class="helptext">{{ form.actual_file1.help_text }}</span>
+            {{ form.actual_file1.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.actual_file2.label_tag }}
+            {{ form.actual_file2 }}
+            <span class="helptext">{{ form.actual_file2.help_text }}</span>
+            {{ form.actual_file2.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.Image_file1.label_tag }}
+            {{ form.Image_file1 }}
+            <span class="helptext">{{ form.Image_file1.help_text }}</span>
+            {{ form.Image_file1.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.Image_file2.label_tag }}
+            {{ form.Image_file2 }}
+            <span class="helptext">{{ form.Image_file2.help_text }}</span>
+            {{ form.Image_file2.errors }}
+        </div>
+-->
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.causediv.label_tag }}
+            <span class="helptext">{{ form.causediv.help_text }}</span>
+            {{ form.causediv }}
+            {{ form.causediv.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.cause.label_tag }}
+            <span class="helptext">{{ form.cause.help_text }}</span>
+            {{ form.cause }}
+            {{ form.cause.errors }}
+        </div>
+        </div>
+<!--
+        <br>
+        <div class="field">
+            {{ form.actual_file3.label_tag }}
+            {{ form.actual_file3 }}
+            <span class="helptext">{{ form.actual_file3.help_text }}</span>
+            {{ form.actua_file3.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.actual_file4.label_tag }}
+            {{ form.actual_file4 }}
+            <span class="helptext">{{ form.actual_file4.help_text }}</span>
+            {{ form.actual_file4.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.Image_file3.label_tag }}
+            {{ form.Image_file3 }}
+            <span class="helptext">{{ form.Image_file3.help_text }}</span>
+            {{ form.Image_file3.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.Image_file4.label_tag }}
+            {{ form.Image_file4 }}
+            <span class="helptext">{{ form.Image_file4.help_text }}</span>
+            {{ form.Image_file4.errors }}
+        </div>
+-->
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.counterplan.label_tag }}
+            <span class="helptext">{{ form.counterplan.help_text }}</span>
+            {{ form.counterplan }}
+            {{ form.counterplan.errors }}
+        </div>
+        </div>
+<!--
+        <br>
+        <div class="field">
+            {{ form.actual_file5.label_tag }}
+            {{ form.actual_file5 }}
+            <span class="helptext">{{ form.actual_file5.help_text }}</span>
+            {{ form.actual_file5.errors }}
+        </div>
+        <br>
+        <div class="field">
+            {{ form.Image_file5.label_tag }}
+            {{ form.Image_file5 }}
+            <span class="helptext">{{ form.Image_file5.help_text }}</span>
+            {{ form.Image_file5.errors }}
+        </div>
+-->        
+        <!-- div class="field" -->
+        <!--    {{ form.checklist }} -->
+        <!-- チェックリストを横表示にする処理追加　-->
+        <hr>
+    	<div class="form-group>
+    	<!-- div class="form-group row my-12" -->
+            <!-- div class="col-sm-3 col-form-label" -->
+                {{ form.checklist.label_tag }}<br>
+            <!-- /div -->       
+            <span class="helptext">{{ form.checklist.help_text }}</span>
+
+    		<!-- div class="col-lg-10 form-check" -->
+
+        	<div class="row"><div class="col-sm-9 form-check">
+      			{% for c in form.checklist %}
+        			{{ c }} 
+    			{% endfor %}
+    		</div></div>
+            {{ form.checklist.errors }}
+        </div>
+        <div class="form-group">
+        <div class="field">
+            {{ form.evidence.label_tag }}
+            <span class="helptext">{{ form.evidence.help_text }}</span>
+            {{ form.evidence }}
+            {{ form.evidence.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.completiondate.label_tag }}
+            <span class="helptext">{{ form.completiondate.help_text }}</span>
+            {{ form.completiondate }}
+            {{ form.completiondate.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.is_public.label_tag }}
+            <span class="helptext">{{ form.is_public.help_text }}</span>
+            {{ form.is_public }}
+            {{ form.is_public.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ formset.management_form }}
+            {% for file_form in formset %}
+
+                {{ file_form.as_p }}
+<!--
+                {{ file_form.content_file.label_tag }}
+                <span class="helptext">{{ file_form.content_file.help_text }}</span>
+                {{ file_form.content_file }}
+                {% if formset.can_delete %}
+                    削除：{{ file_form.DELETE }}
+                {% endif %}
+                {{ file_form.content_file.errors }}
+-->
+                <hr>
+            {% endfor %}
+        </div>
+        </div>
+        <br>
+
+        {% csrf_token %}
+
+        <button type="submit" class="save btn btn-primary">保存</button>
+        <a class="btn btn-primary" href="javascript:void(0);" onclick="window.history.back();">戻る</a>
+        <!-- <button type="cancel" class="cancel btn btn-default">Cancel</button> -->
+
+        <!-- 削除ボタン　-->
+<!--
+        {% if request.user == post_author %}
+            <form method="post" action="{% url 'posts:post_delete' form.id %}">{% csrf_token %}
+                <button class="btn" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
+            </form>
+        {% endif %}
+-->
+    </form>
+
+{% else %}
+  <p>新規登録・修正にはログインが必要です。</p>
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+
+    </main>
+    </div>
+</div>
+
+{% endblock %}

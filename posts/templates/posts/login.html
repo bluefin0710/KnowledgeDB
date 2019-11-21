@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container container-fluid　 style="margin-top: 60px;">
+
+    <h2>技術管理票システム ログイン</h2>
+    <BR>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ログイン">
+        </form>
+</div>
+
+{% endblock %}
+

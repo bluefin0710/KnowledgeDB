@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block title %}小区分一覧 | {{ block.super }}{% endblock %}
+{% block description %}小区分一覧ページです。{% endblock %}
+
+{% block content %}
+<h1>小区分一覧</h1>
+<ul>
+  {% for subcategory in object_list %}
+  <li><a href="{% url 'posts:subcategory_post' subcategory.slug %}">{{ subcategory.name }} ({{ subcategory.num_posts }})</a></li>
+  {% empty %}
+  <li>小区分はありません。</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,168 @@
+<div class="accordion" id="accordion2" role="tablist">
+    <div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+        <div class="card-header" role="tab" id="heading1">
+            <a data-toggle="collapse" class="text-body stretched-link text-decoration-none" href="#collapse1" aria-expanded="true" aria-controls="collapse1"> 機種名称</a>
+        </div>
+        <div id="collapse1" class="collapse show" role="tabpanel" aria-labelledby="heading1" data-parent="#accordion2">
+
+            <ul class="list-group list-group-flush">
+                {% for equipment in equipments|dictsort:"id" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'posts:equipment_post' equipment.slug %}" class="card-link">{{ equipment.name }}</a>
+                    <span class="badge badge-primary badge-pill">{{ equipment.num_posts }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+</br>
+
+<div class="accordion" id="accordion4" role="tablist">
+    <div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+        <div class="card-header" role="tab" id="heading3">
+            <a data-toggle="collapse" class="text-body stretched-link text-decoration-none" href="#collapse3" aria-expanded="true" aria-controls="collapse3"> 大区分</a>
+        </div>
+        <div id="collapse3" class="collapse show" role="tabpanel" aria-labelledby="heading3" data-parent="#accordion4">
+    
+            <ul class="list-group list-group-flush">
+                {% for category in categories|dictsortreversed:"num_posts"|slice:":10" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'posts:category_post' category.slug %}" class="card-link">{{ category.name }}</a>
+                    <span class="badge badge-primary badge-pill">{{ category.num_posts }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+<!--
+  <div class="card-body text-center">
+    <a href="{% url 'posts:category_list' %}" class="card-link">すべての大区分を見る</a>
+  </div>
+-->
+        </div>
+    </div>
+</div>
+
+</br>
+
+<div class="accordion" id="accordion6" role="tablist">
+    <div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+        <div class="card-header" role="tab" id="heading5">
+            <a data-toggle="collapse" class="text-body stretched-link text-decoration-none" href="#collapse5" aria-expanded="true" aria-controls="collapse5"> 小区分</a>
+        </div>
+        <div id="collapse5" class="collapse show" role="tabpanel" aria-labelledby="heading5" data-parent="#accordion6">
+
+            <ul class="list-group list-group-flush">
+                {% for subcategory in subcategories|dictsortreversed:"num_posts"|slice:":5" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'posts:subcategory_post' subcategory.slug %}" class="card-link">{{ subcategory.name }}</a>
+                    <span class="badge badge-primary badge-pill">{{ subcategory.num_posts }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="card-body text-center">
+                <a href="{% url 'posts:subcategory_list' %}" class="card-link">すべての小区分を見る</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</br>
+
+<div class="accordion" id="accordion8" role="tablist">
+    <div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+        <div class="card-header" role="tab" id="heading5">
+            <a data-toggle="collapse" class="text-body stretched-link text-decoration-none" href="#collapse7" aria-expanded="true" aria-controls="collapse7"> 状態区分</a>    
+        </div>
+        <div id="collapse7" class="collapse show" role="tabpanel" aria-labelledby="heading7" data-parent="#accordion8">
+
+            <ul class="list-group list-group-flush">
+                {% for state in states|dictsortreversed:"num_posts"|slice:":10" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'posts:state_post' state.slug %}" class="card-link">{{ state.name }}</a>
+                    <span class="badge badge-primary badge-pill">{{ state.num_posts }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+<!--
+  <div class="card-body text-center">
+    <a href="{% url 'posts:subcategory_list' %}" class="card-link">すべての状態区分を見る</a>
+  </div>
+-->
+        </div>
+    </div>
+</div>
+    
+</br>
+</br>
+</br>
+</br>
+
+<div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+  <div class="card-header">
+    機種名
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for equipment in equipments|dictsort:"id" %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{% url 'posts:equipment_post' equipment.slug %}" class="card-link">{{ equipment.name }}</a>
+      <span class="badge badge-primary badge-pill">{{ equipment.num_posts }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+  <div class="card-header">
+    大区分
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for category in categories|dictsortreversed:"num_posts"|slice:":10" %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{% url 'posts:category_post' category.slug %}" class="card-link">{{ category.name }}</a>
+      <span class="badge badge-primary badge-pill">{{ category.num_posts }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+<!--
+  <div class="card-body text-center">
+    <a href="{% url 'posts:category_list' %}" class="card-link">すべての大区分を見る</a>
+  </div>
+-->
+</div>
+
+<div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+  <div class="card-header">
+    小区分
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for subcategory in subcategories|dictsortreversed:"num_posts"|slice:":5" %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{% url 'posts:subcategory_post' subcategory.slug %}" class="card-link">{{ subcategory.name }}</a>
+      <span class="badge badge-primary badge-pill">{{ subcategory.num_posts }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="card-body text-center">
+    <a href="{% url 'posts:subcategory_list' %}" class="card-link">すべての小区分を見る</a>
+  </div>
+</div>
+
+<div class="card mb-2" style="width: 12rem; font-size: 12px; line-height: 0.5;">
+  <div class="card-header">
+    状態区分
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for state in states|dictsortreversed:"num_posts"|slice:":10" %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{% url 'posts:state_post' state.slug %}" class="card-link">{{ state.name }}</a>
+      <span class="badge badge-primary badge-pill">{{ state.num_posts }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+<!--
+  <div class="card-body text-center">
+    <a href="{% url 'posts:subcategory_list' %}" class="card-link">すべての状態区分を見る</a>
+  </div>
+-->
+</div>
