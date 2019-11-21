@@ -29,7 +29,7 @@ SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1","pythonanywhere.com"]
 
 
 # Application definition
@@ -101,9 +101,10 @@ DATABASES = {
                 'ENGINE': 'django.db.backends.mysql',
                  'NAME':'masterdb',
                  'USER':'root',
+#                 'USER':'nmcmh01', # for pythonanywhere                
                  'PASSWORD':'mysqlroot',
-                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
-#                 'HOST':'127.0.0.1',
+#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com', # for pythonanywhere
+                 'HOST':'127.0.0.1',
                  'PORT':'3306',
         }
 }
