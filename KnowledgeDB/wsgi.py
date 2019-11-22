@@ -9,6 +9,11 @@ https://docs.djangoproject.com/en/2.2/howto/deployment/wsgi/
 
 import os
 import sys
+#import pymysql
+
+#pymysql.install_as_MySQLdb()
+
+
 
 path = '/home/nmcmh01/nmcmh01.pythonanywhere.com/'
 if path not in sys.path:

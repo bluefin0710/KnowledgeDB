@@ -103,15 +103,25 @@ WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
 
 DATABASES = {
         'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                 'NAME':'nmcmh01$MasterDB',
+                'ENGINE':'django.db.backends.mysql',
 #                 'NAME':'MasterDB',
-                 'USER':'nmcmh01',
- #                'USER':'root',
-                 'PASSWORD':'mysqlroot',
-                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+#                 'USER':'root',
 #                 'HOST':'127.0.0.1',
+                 'NAME':'nmcmh01$MasterDB',
+                 'USER':'nmcmh01',
+                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+                 'PASSWORD':'mysqlroot',
                  'PORT':'3306',
+#                 'OPTIONS': {
+#                         'read_default_file': '/path/to/my.cnf',
+## my.cnf
+#[client]
+#database = NAME
+#user = USER
+#password = PASSWORD
+#default-character-set = utf8
+
+#                         }
         }
 }
 
@@ -149,7 +159,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+#USE_TZ = True
+USE_TZ = False
 
 
 
