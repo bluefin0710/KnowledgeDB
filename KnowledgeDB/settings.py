@@ -27,7 +27,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
 ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
@@ -88,31 +89,31 @@ WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 # MySQL Setting
 # import pymysql
 # pymsql.install_as_MySQLdb()
 #
 
-#DATABASES = {
-#        'default': {
-#                'ENGINE': 'django.db.backends.mysql',
-#                 'NAME':'nmcmh01$MasterDB',
-##                 'NAME':'MasterDB',
-#                 'USER':'nmcmh01',
-##                 'USER':'root',
-#                 'PASSWORD':'mysqlroot',
-#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
-##                 'HOST':'127.0.0.1',
-#                 'PORT':'3306',
-#        }
-#}
+DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                 'NAME':'nmcmh01$MasterDB',
+#                 'NAME':'MasterDB',
+                 'USER':'nmcmh01',
+ #                'USER':'root',
+                 'PASSWORD':'mysqlroot',
+                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+#                 'HOST':'127.0.0.1',
+                 'PORT':'3306',
+        }
+}
 
 
 
