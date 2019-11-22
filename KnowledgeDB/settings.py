@@ -89,41 +89,42 @@ WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 # MySQL Setting
 # import pymysql
 # pymsql.install_as_MySQLdb()
 #
 
-DATABASES = {
-        'default': {
-                'ENGINE':'django.db.backends.mysql',
-#                 'NAME':'MasterDB',
-#                 'USER':'root',
-#                 'HOST':'127.0.0.1',
-                 'NAME':'nmcmh01$MasterDB',
-                 'USER':'nmcmh01',
-                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
-                 'PASSWORD':'mysqlroot',
-                 'PORT':'3306',
-#                 'OPTIONS': {
-#                         'read_default_file': '/path/to/my.cnf',
-## my.cnf
-#[client]
-#database = NAME
-#user = USER
-#password = PASSWORD
-#default-character-set = utf8
-
-#                         }
-        }
-}
+#DATABASES = {
+#        'default': {
+#                'ENGINE':'django.db.backends.mysql',
+##                 'NAME':'MasterDB',
+##                 'USER':'root',
+##                 'HOST':'127.0.0.1',
+#                 'NAME':'nmcmh01$MasterDB',
+#                 'USER':'nmcmh01',
+#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+#                 'PASSWORD':'mysqlroot',
+#                 'PORT':'3306',
+##                 'OPTIONS': {
+##                         'read_default_file': '/path/to/my.cnf',
+### my.cnf
+##[client]
+##database = NAME
+##user = USER
+##password = PASSWORD
+##default-character-set = utf8
+#
+##                         }
+#        }
+#}
 
 
 
