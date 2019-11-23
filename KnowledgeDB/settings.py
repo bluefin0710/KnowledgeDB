@@ -26,8 +26,8 @@ SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 DEBUG = False
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
-#ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
-ALLOWED_HOSTS = ['.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
+#ALLOWED_HOSTS = ['.pythonanywhere.com']
 #ALLOWED_HOSTS = ['*']
 
 
