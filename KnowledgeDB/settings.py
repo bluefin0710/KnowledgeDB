@@ -15,11 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static'),
-#]
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -27,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'crw@l2-6pgk-dfhwi!e8g2b(!9)db38jtl=70f_0g-6lo0^gmb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
 ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
@@ -71,6 +66,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'dbsite.context_processors.common',
@@ -113,8 +109,11 @@ DATABASES = {
 #                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
 #                 'PASSWORD':'mysqlroot',
 #                 'PORT':'3306',
+#                 'AUTOMIC_REQUESTS':True,
 ##                 'OPTIONS': {
 ##                         'read_default_file': '/path/to/my.cnf',
+#                          'charset': 'utf8mb4',
+#                          'sql_mode': 'TRADITONAL,NO_AUTO_VALUE_ON_ZERO',
 ### my.cnf
 ##[client]
 ##database = NAME
@@ -163,15 +162,8 @@ USE_L10N = True
 USE_TZ = True
 #USE_TZ = False
 
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-MEDIA_URL = '/pics/'
-MEDIA_ROOT = BASE_DIR
 
 LOGIN_URL = 'posts:login'
 LOGIN_REDIRECT_URL = 'posts:index_listview'
@@ -179,6 +171,13 @@ LOGIN_REDIRECT_URL = 'posts:index_listview'
 #LOGIN_REDIRECT_URL = '../../posts/'
 LOGOUT_REDIRECT_URL = '../../'
 
-MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+#MEDIA_URL = '/pics/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static'),
+#]

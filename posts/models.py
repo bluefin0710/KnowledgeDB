@@ -435,22 +435,23 @@ class Post(models.Model):
 
 class ContentImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content_image = models.ImageField(upload_to='uploaded_files/',
-                                      verbose_name='画像ファイル',
-                                      )
-
+    content_image = models.ImageField(
+ #                                    upload_to='uploaded_files/',
+                                    verbose_name='画像ファイル',
+                                    )
+ 
 class ContentFile(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    content_file = models.FileField(upload_to='uploaded_files/',
+    content_file = models.FileField(
+#                                    upload_to='uploaded_files/',
                                     verbose_name='添付ファイル',
                                     )
-    file_type = models.CharField(max_length=10, 
-                                 null=True, 
-                                 blank=True,
-                                 verbose_name='ファイルタイプ',
-                                 help_text='添付したファイルタイプ',
-                                 
-                                 )
+#    file_type = models.CharField(max_length=10, 
+#                                 null=True, 
+#                                 blank=True,
+#                                 verbose_name='ファイルタイプ',
+#                                 help_text='添付したファイルタイプ',                                
+#                                 )
 
 def user_portfolio_directory_path(instance, filename):
     return 'image-{0}/{1}'.format(instance.id, filename)

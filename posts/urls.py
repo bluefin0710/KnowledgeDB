@@ -84,5 +84,5 @@ urlpatterns = [
 ##    path('post/new/', views.post_new, name='post_new'),
 
 ]
-urlpatterns += static(settings.MEDIA_URL,
-                      document_root=settings.MEDIA_ROOT)
+#urlpatterns += static(settings.MEDIA_URL,
+#                      document_root=settings.MEDIA_ROOT)
