@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'posts.apps.PostsConfig',   #App
-#    'bootstrap4',  # django-bootstrap4
+    'bootstrap4',  # django-bootstrap4
 ]
 
 MIDDLEWARE = [
@@ -87,30 +87,30 @@ WSGI_APPLICATION = 'KnowledgeDB.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
 
 # MySQL Setting
 # import pymysql
 # pymsql.install_as_MySQLdb()
 #
 
-#DATABASES = {
-#        'default': {
-#                'ENGINE':'django.db.backends.mysql',
-##                 'NAME':'MasterDB',
-##                 'USER':'root',
-##                 'HOST':'127.0.0.1',
-#                 'NAME':'nmcmh01$MasterDB',
-#                 'USER':'nmcmh01',
-#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
-#                 'PASSWORD':'mysqlroot',
-#                 'PORT':'3306',
-#                 'AUTOMIC_REQUESTS':True,
+DATABASES = {
+        'default': {
+                'ENGINE':'django.db.backends.mysql',
+#                 'NAME':'masterdb',
+#                 'USER':'root',
+#                 'HOST':'127.0.0.1',
+                 'NAME':'nmcmh01$MasterDB',
+                 'USER':'nmcmh01',
+                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+                 'PASSWORD':'mysqlroot',
+                 'PORT':'3306',
+                 'AUTOMIC_REQUESTS':True,
 ##                 'OPTIONS': {
 ##                         'read_default_file': '/path/to/my.cnf',
 #                          'charset': 'utf8mb4',
@@ -123,9 +123,8 @@ DATABASES = {
 ##default-character-set = utf8
 #
 ##                         }
-#        }
-#}
-
+        }
+}
 
 
 # Password validation

@@ -95,7 +95,7 @@ class Equipment(models.Model):
         if not self.slug:
 #            self.slug = slugify(self.name)
             self.slug = slugify(self.name) +'E'+ slugify(localtime(timezone.now())) 
-            super(Equipment, self).save(*args, **kwargs)
+        super(Equipment, self).save(*args, **kwargs)
 
 class Category(models.Model):
     name = models.CharField(max_length=255,
@@ -106,11 +106,11 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-#            self.slug = slugify(self.name)
-            self.slug = slugify(self.name) +'C'+ slugify(localtime(timezone.now())) 
-            super(Category, self).save(*args, **kwargs)
+#    def save(self, *args, **kwargs):
+#        if not self.slug:
+##            self.slug = slugify(self.name)
+#            self.slug = slugify(self.name) +'C'+ slugify(localtime(timezone.now())) 
+#        super(Category, self).save(*args, **kwargs)
 
 class Subcategory(models.Model):
     name = models.CharField(max_length=255,
@@ -126,7 +126,7 @@ class Subcategory(models.Model):
         if not self.slug:
 #            self.slug = slugify(self.name)
             self.slug = slugify(self.name) +'Su'+ slugify(localtime(timezone.now()))
-            super(Subcategory, self).save(*args, **kwargs)
+        super(Subcategory, self).save(*args, **kwargs)
 
 class State(models.Model):
     name = models.CharField(max_length=255)
@@ -136,12 +136,13 @@ class State(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-#            self.slug = slugify(self.name)
-            self.slug = slugify(self.name) +'Sa'+ slugify(localtime(timezone.now())) 
-            super(State, self).save(*args, **kwargs)
-
+#    def save(self, *args, **kwargs):
+#        if not self.slug:
+##            self.slug = slugify(self.name)
+#            self.slug = slugify(self.name) +'Sa'+ slugify(localtime(timezone.now())) 
+#        super(State, self).save(*args, **kwargs)
+#
+        
 #
 #class Checklist_A(models.Model):   
 #    name = models.CharField(
