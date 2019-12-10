@@ -1,3 +1,4 @@
+#import logging
 #from django.contrib.auth.mixins import LoginRequiredMixin
 #from django.contrib.auth.decorators import login_required
 #from django.http import HttpResponse
@@ -12,9 +13,28 @@ from django.views.generic.edit import CreateView,DeleteView
 #from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.urls import reverse_lazy
-from posts.forms import PostForm, SearchForm, FileFormset, EquipmentForm, SubcategoryForm
-from posts.models import Post,Equipment,Category,Subcategory,State
-#from posts.models import Checklist_A
+from posts.forms import (
+                PostForm, 
+                SearchForm, 
+                FileFormset, 
+                EquipmentForm, 
+                SubcategoryForm,
+            )
+from posts.models import (
+                Post,
+                Equipment,
+                Category,
+                Subcategory,
+                State,
+                Discoverydiv,
+                Severity,
+                Causediv,
+                Checklist_A,
+            )
+
+import re
+
+#logger = logging.getLogger('development')
 
 #def index(request):
 #    # return HttpResponse("Hello World! このページは投稿のインデックスです。")
@@ -43,19 +63,43 @@ def signup(request):
 
 class Searchlistview(ListView):
     paginate_by = 25
+#-- for debug    
+#    paginate_by = 1
     template_name = 'posts/search_listview.html'
     model = Post
 
     def post(self, request, *args, **kwargs):
 
         form_value = [
-                self.request.POST.get('equipment', None),
+                self.request.POST.getlist('Equipment_cb', None),
+                self.request.POST.getlist('Category_cb', None),
+                self.request.POST.getlist('Subcategory_cb', None),
+                self.request.POST.getlist('State_cb', None),
+                self.request.POST.getlist('Discoverydiv_cb', None),
+                self.request.POST.getlist('Severity_cb', None),
+                self.request.POST.getlist('Causediv_cb', None),
+                self.request.POST.getlist('Checklist_A_cb', None),
                 self.request.POST.get('overview', None),
                 self.request.POST.get('content', None),
                 self.request.POST.get('cause', None),
                 self.request.POST.get('counterplan', None),
-                self.request.POST.get('category', None),
-                self.request.POST.get('subcategory', None),
+                self.request.POST.get('author', None),
+#                self.request.POST.get('equipment', None),
+#                self.request.POST.get('category', None),
+#                self.request.POST.get('subcategory', None),
+#                self.request.POST.get('state', None),
+#                self.request.POST.get('discoverydiv', None),
+#                self.request.POST.get('severity', None),
+#                self.request.POST.get('causediv', None),
+#                self.request.POST.get('checklist', None),
+#                self.request.POST.getlist('Equipment_DICT', None),
+#                self.request.POST.getlist('Category_DICT', None),
+#                self.request.POST.getlist('Subcategory_DICT', None),
+#                self.request.POST.getlist('State_DICT', None),
+#                self.request.POST.getlist('Discoverydiv_DICT', None),
+#                self.request.POST.getlist('Severity_DICT', None),
+#                self.request.POST.getlist('Causediv_DICT', None),
+#                self.request.POST.getlist('Checklist_A_DICT', None),
                 ]
         request.session['form_value'] = form_value
 
@@ -69,35 +113,303 @@ class Searchlistview(ListView):
         context = super().get_context_data(**kwargs)
 
         # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
-        equipment = ''
+#        equipment = ''
         overview = ''
         content = ''
         cause = ''
         counterplan = ''
-        category = ''
-        subcategory = ''
+        author = ''
+#        category = ''
+#        subcategory = ''
+#        state = ''
+#        discoverydiv = ''
+#        severity = ''  
+#        causediv = ''  
+#        checklist = ''
+        Equipment_cb = ''
+        Category_cb = ''
+        Subcategory_cb = ''
+        State_cb = ''
+        Discoverydiv_cb = ''
+        Severity_cb = ''
+        Causediv_cb = ''
+        Checklist_A_cb = ''
+        Equipment_DICT = dict()
+        Category_DICT = dict()
+        Subcategory_DICT = dict()
+        State_DICT = dict()
+        Discoverydiv_DICT = dict()
+        Severity_DICT = dict()
+        Causediv_DICT = dict()
+        Checklist_A_DICT = dict()
+    
         if 'form_value' in self.request.session:
             form_value = self.request.session['form_value']
-            equipment = form_value[0]
-            overview = form_value[1]
-            content = form_value[2]
-            cause = form_value[3]
-            counterplan = form_value[4]
-            category = form_value[5]
-            subcategory = form_value[6]
 
-        default_data = {'equipment': equipment,  # タイトル
+#            equipment = form_value[0]
+#            overview = form_value[1]
+#            content = form_value[2]
+#            cause = form_value[3]
+#            counterplan = form_value[4]
+#            category = form_value[5]
+#            subcategory = form_value[6]
+#            state = form_value[7]
+#            discoverydiv = form_value[8]
+#            severity = form_value[9]  
+#            causediv = form_value[10]  
+#            checklist = form_value[11]
+#            Equipment_cb = form_value[12]
+#            Category_cb = form_value[13]
+#            Subcategory_cb = form_value[14]
+#            State_cb = form_value[15]
+#            Discoverydiv_cb = form_value[16]
+#            Severity_cb = form_value[17]
+#            Causediv_cb = form_value[18]
+#            Checklist_A_cb = form_value[19]
+
+            Equipment_cb = form_value[0]
+            Category_cb = form_value[1]
+            Subcategory_cb = form_value[2]
+            State_cb = form_value[3]
+            Discoverydiv_cb = form_value[4]
+            Severity_cb = form_value[5]
+            Causediv_cb = form_value[6]
+            Checklist_A_cb = form_value[7]
+            overview = form_value[8]
+            content = form_value[9]
+            cause = form_value[10]
+            counterplan = form_value[11]
+            author = form_value[12]
+
+#            print("form_value[0]:")
+#            print(form_value[0])
+#            print("form_value[1]:")
+#            print(form_value[1])
+#            print("form_value[2]:")
+#            print(form_value[2])
+#            print("form_value[3]:")
+#            print(form_value[3])
+#            print("form_value[4]:")
+#            print(form_value[4])
+#            print("form_value[5]:")
+#            print(form_value[5])
+#            print("form_value[6]:")
+#            print(form_value[6])
+#            print("form_value[7]:")
+#            print(form_value[7])
+#            print("form_value[8]:")
+#            print(form_value[8])
+#            print("form_value[9]:")
+#            print(form_value[9])
+#            print("form_value[10]:")
+#            print(form_value[10])
+#            print("form_value[11]:")
+#            print(form_value[11])
+
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(機種名称)のvalueを１にする
+            for B in Equipment.objects.all():
+                Equipment_DICT[B.name] = 0
+                if Equipment_cb:
+                    for A in Equipment_cb:
+                        if A == B.name:
+                            Equipment_DICT[B.name] = 1
+                            break
+ 
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(大区分)のvalueを１にする
+            for B in Category.objects.all():
+                Category_DICT[B.name] = 0
+                if Category_cb:
+                    for A in Category_cb:
+                        if A == B.name:
+                            Category_DICT[B.name] = 1
+                            break
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(小区分)のvalueを１にする
+            for B in Subcategory.objects.all():
+                Subcategory_DICT[B.name] = 0
+                if Subcategory_cb:
+                    for A in Subcategory_cb:
+                        if A == B.name:
+                            Subcategory_DICT[B.name] = 1 
+                            break
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(状態区分)のvalueを１にする
+            for B in State.objects.all():
+                State_DICT[B.name] = 0
+                if State_cb:
+                    for A in State_cb:
+                        if A == B.name:
+                            State_DICT[B.name] = 1
+                            break
+ 
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(発見区分)のvalueを１にする
+            for B in Discoverydiv.objects.all():
+                Discoverydiv_DICT[B.name] = 0
+                if Discoverydiv_cb:
+                    for A in Discoverydiv_cb:
+                        if A == B.name:
+                            Discoverydiv_DICT[B.name] = 1
+                            break
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(重度)のvalueを１にする
+            for B in Severity.objects.all():
+                Severity_DICT[B.name] = 0
+                if Severity_cb:
+                    for A in Severity_cb:
+                        if A == B.name:
+                            Severity_DICT[B.name] = 1
+                            break
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(原因区分)のvalueを１にする
+            for B in Causediv.objects.all():
+                Causediv_DICT[B.name] = 0
+                if Causediv_cb:
+                    for A in Causediv_cb:
+                        if A == B.name:
+                            Causediv_DICT[B.name] = 1
+                            break
+
+            #データをDICT型で構成し、チェックボックスで、チェックしたkey(チェックリスト)のvalueを１にする
+            for B in Checklist_A.objects.all():
+                Checklist_A_DICT[B.name] = 0
+                if Checklist_A_cb:
+                    for A in Checklist_A_cb:
+                        if A == B.name:
+                            Checklist_A_DICT[B.name] = 1
+                            break
+
+
+#        for B in Equipment.objects.all():
+#            Equipment_DICT[B.name] = 0
+#            if self.request.POST.getlist('Equipment_cb', None):
+#                for A in self.request.POST.getlist('Equipment_cb', None):
+#                    if A == B.name:
+#                        Equipment_DICT[B.name] = 1
+#                        break
+
+#        for B in Category.objects.all():
+#            Category_DICT[B.name] = 0
+#            if self.request.POST.getlist('Category_cb', None):
+#                for A in self.request.POST.getlist('Category_cb', None):
+#                    if A == B.name:
+#                        Category_DICT[B.name] = 1
+#                        break
+
+#        for B in Subcategory.objects.all():
+#            Subcategory_DICT[B.name] = 0
+#            if self.request.POST.getlist('Subcategory_cb', None):
+#                for A in self.request.POST.getlist('Subcategory_cb', None):
+#                    if A == B.name:
+#                        Subcategory_DICT[B.name] = 1
+#                        break
+
+#        for B in State.objects.all():
+#            State_DICT[B.name] = 0
+#            if self.request.POST.getlist('State_cb', None):
+#                for A in self.request.POST.getlist('State_cb', None):
+#                    if A == B.name:
+#                        State_DICT[B.name] = 1
+#                        break
+
+#        for B in Discoverydiv.objects.all():
+#            Discoverydiv_DICT[B.name] = 0
+#            if self.request.POST.getlist('Discoverydiv_cb', None):
+#                for A in self.request.POST.getlist('Discoverydiv_cb', None):
+#                    if A == B.name:
+#                        Discoverydiv_DICT[B.name] = 1
+#                        break
+
+#        for B in Severity.objects.all():
+#            Severity_DICT[B.name] = 0
+#            if self.request.POST.getlist('Severity_cb', None):
+#                for A in self.request.POST.getlist('Severity_cb', None):
+#                    if A == B.name:
+#                        Severity_DICT[B.name] = 1
+#                        break
+
+#        for B in Causediv.objects.all():
+#            Causediv_DICT[B.name] = 0
+#            if self.request.POST.getlist('Causediv_cb', None):
+#                for A in self.request.POST.getlist('Causediv_cb', None):
+#                    if A == B.name:
+#                        Causediv_DICT[B.name] = 1
+#                        break
+
+#        for B in Checklist_A.objects.all():
+#            Checklist_A_DICT[B.name] = 0
+#            if self.request.POST.getlist('Checklist_A_cb', None):
+#                for A in self.request.POST.getlist('Checklist_A_cb', None):
+#                    if A == B.name:
+#                        Checklist_A_DICT[B.name] = 1
+#                        break
+
+
+
+        #searchFormにある要素の初期値の設定 フォームに値がある場合の処理
+        default_data = {
+#                        'equipment': equipment,  # 機種名称
                         'overview': overview,  # 概要
                         'content': content,  # 内容
                         'cause': cause,  # 原因
                         'counterplan': counterplan,  # 対策
-                        'category': category,  # 大分類
-                        'subcategory': subcategory,  # 小分類
+                        'author': author,  # 登録者
+#                        'category': category,  # 大分類
+#                        'subcategory': subcategory,  # 小分類
+#                        'state': state,
+#                        'discoverydiv': discoverydiv,
+#                        'severity': severity,  
+#                        'causediv': causediv,  
+ #                       'checklist': checklist,
+#                        'Equipment_cb': Equipment_cb,
+#                        'Category_cb': Category_cb, 
+#                        'Subcategory_cb': Subcategory_cb, 
+#                        'State_cb': State_cb,
+#                        'Discoverydiv_cb': Discoverydiv_cb, 
+#                        'Severity_cb': Severity_cb,
+#                        'Causediv_cb': Causediv_cb,
+#                        'Checklist_A_cb': Checklist_A_cb,
+#                        'Equipment_DICT': Equipment_DICT,
+#                        'Category_DICT': Category_DICT,
+#                        'Subcategory_DICT': Subcategory_DICT,
                         }
 
         test_form = SearchForm(initial=default_data) # 検索フォーム
-        context['test_form'] = test_form
 
+        context['test_form'] = test_form
+        
+        context['Equipment'] = Equipment.objects.all()
+        context['Equipment_cb'] = Equipment_cb
+        context['Equipment_DICT'] = Equipment_DICT
+
+        context['Category'] = Category.objects.all()
+        context['Category_cb'] = Category_cb
+        context['Category_DICT'] = Category_DICT
+ 
+        context['Subcategory'] = Subcategory.objects.all()
+        context['Subcategory_cb'] = Subcategory_cb
+        context['Subcategory_DICT'] = Subcategory_DICT
+
+        context['State'] = State.objects.all()
+        context['State_cb'] = State_cb
+        context['State_DICT'] = State_DICT
+
+        context['Discoverydiv'] = Discoverydiv.objects.all()
+        context['Discoverydiv_cb'] = Discoverydiv_cb
+        context['Discoverydiv_DICT'] = Discoverydiv_DICT
+
+        context['Severity'] = Severity.objects.all()
+        context['Severity_cb'] = Severity_cb
+        context['Severity_DICT'] = Severity_DICT
+
+        context['Causediv'] = Causediv.objects.all()
+        context['Causediv_cb'] = Causediv_cb
+        context['Causediv_DICT'] = Causediv_DICT
+
+        context['Checklist_A'] = Checklist_A.objects.all()
+        context['Checklist_A_cb'] = Checklist_A_cb 
+        context['Checklist_A_DICT'] = Checklist_A_DICT
+ 
         return context
 
     def get_queryset(self):
@@ -105,40 +417,217 @@ class Searchlistview(ListView):
         # sessionに値がある場合、その値でクエリ発行する。
         if 'form_value' in self.request.session:
             form_value = self.request.session['form_value']
-            equipment = form_value[0]
-            overview = form_value[1]
-            content = form_value[2]
-            cause = form_value[3]
-            counterplan = form_value[4]
-            category = form_value[5]
-            subcategory = form_value[6]
+#            equipment = form_value[0]
+#            overview = form_value[1]
+#            content = form_value[2]
+#            cause = form_value[3]
+#            counterplan = form_value[4]
+#            category = form_value[5]
+#            subcategory = form_value[6]
+#            state = form_value[7]
+#            discoverydiv = form_value[8]
+#            severity = form_value[9]  
+#            causediv = form_value[10]  
+#            checklist = form_value[11]
+
+#            Equipment_cb = form_value[12]
+#            Category_cb = form_value[13]
+#            Subcategory_cb = form_value[14]
+#            State_cb = form_value[15]
+#            Discoverydiv_cb = form_value[16]
+#            Severity_cb = form_value[17]
+#            Causediv_cb = form_value[18]
+#            Checklist_A_cb = form_value[19]
+
+
+            Equipment_cb = form_value[0]
+            Category_cb = form_value[1]
+            Subcategory_cb = form_value[2]
+            State_cb = form_value[3]
+            Discoverydiv_cb = form_value[4]
+            Severity_cb = form_value[5]
+            Causediv_cb = form_value[6]
+            Checklist_A_cb = form_value[7]
+            overview = form_value[8]
+            content = form_value[9]
+            cause = form_value[10]
+            counterplan = form_value[11]
+            author = form_value[12]
 
             # 検索条件
             condition_equipment = Q()
+            condition_category = Q()
+            condition_subcategory = Q()
+            condition_state = Q()
+            condition_discoverydiv = Q()
+            condition_severity = Q()  
+            condition_causediv = Q()  
+            condition_checklist = Q()
             condition_overview = Q()
             condition_content = Q()
             condition_cause = Q()
             condition_counterplan = Q()
-            condition_category = Q()
-            condition_subcategory = Q()
+            condition_author = Q()
 
-            if len(equipment) != 0 and equipment[0]:
-                condition_equipment = Q(equipment__contains=equipment)
-            if len(overview) != 0 and overview[0]:
-                condition_overview = Q(overview__contains=overview)
-            if len(content) != 0 and content[0]:
-                condition_content = Q(content__contains=content)
-            if len(cause) != 0 and cause[0]:
-                condition_cause = Q(cause__contains=cause)
-            if len(counterplan) != 0 and counterplan[0]:
-                condition_counterplan = Q(counterplan__contains=counterplan)
+#            if len(equipment) != 0 and equipment[0]:
+#                condition_equipment = Q(equipment__name__icontains=equipment)
 #            if len(category) != 0 and category[0]:
-            condition_category = Q(category__contains=category)
+#                condition_category = Q(category__name__icontains=category)
 #            if len(subcategory) != 0 and subcategory[0]:
-            condition_subcategory = Q(subcategory__contains=subcategory)
+#                condition_subcategory = Q(subcategory__name__icontains=subcategory)
+#            if len(state) != 0 and state[0]:
+#                condition_state = Q(state__name__icontains=state)
+#            if len(discoverydiv) != 0 and discoverydiv[0]:
+#                condition_discoverydiv = Q(discoverydiv__icontains=discoverydiv)
+#            if len(severity) != 0 and severity[0]:
+#                condition_severity = Q(severity__icontains=severity)
+#            if len(causediv) != 0 and causediv[0]:
+#                condition_causediv = Q(causediv__icontains=causediv)
+#            if len(checklist) != 0 and checklist[0]:
+#                condition_checklist = Q(checklist__name__icontains=checklist)
 
-            return Post.objects.select_related().filter(condition_equipment & condition_overview & condition_content & condition_cause & condition_counterplan)
-#            return Post.objects.select_related().filter(condition_equipment & condition_overview & condition_content & condition_cause & condition_counterplan & condition_category & condition_subcategory)
+            if len(Equipment_cb) != 0 and Equipment_cb[0]:
+                count = 0
+                for A in Equipment_cb:
+                    if count == 0:
+                        condition_equipment = Q(equipment__name__icontains=A)
+                    else:
+                        condition_equipment = condition_equipment | Q(equipment__name__icontains=A)
+                    count +=1
+
+            if len(Category_cb) != 0 and Category_cb[0]:
+                count = 0
+                for A in Category_cb:
+                    if count == 0:
+                        condition_category = Q(category__name__icontains=A)
+                    else:
+                        condition_category = condition_category | Q(category__name__icontains=A)
+                    count +=1
+
+            if len(Subcategory_cb) != 0 and Subcategory_cb[0]:
+                count = 0
+                for A in Subcategory_cb:
+                    if count == 0:
+                        condition_subcategory = Q(subcategory__name__icontains=A)
+                    else:
+                        condition_subcategory = condition_subcategory | Q(subcategory__name__icontains=A)
+                    count +=1
+
+            if len(State_cb) != 0 and State_cb[0]:
+                count = 0
+                for A in State_cb:
+                    if count == 0:
+                        condition_state = Q(state__name__icontains=A)
+                    else:
+                        condition_state = condition_state | Q(state__name__icontains=A)
+                    count +=1
+
+            if len(Discoverydiv_cb) != 0 and Discoverydiv_cb[0]:
+                count = 0
+                for A in Discoverydiv_cb:
+                    if count == 0:
+                        condition_discoverydiv = Q(discoverydiv__name__icontains=A)
+                    else:
+                        condition_discoverydiv = condition_discoverydiv | Q(discoverydiv__name__icontains=A)
+                    count +=1
+
+            if len(Severity_cb) != 0 and Severity_cb[0]:
+                count = 0
+                for A in Severity_cb:
+                    if count == 0:
+                        condition_severity = Q(severity__name__icontains=A)
+                    else:
+                        condition_severity = condition_severity | Q(severity__name__icontains=A)
+                    count +=1
+
+            if len(Causediv_cb) != 0 and Causediv_cb[0]:
+                count = 0
+                for A in Causediv_cb:
+                    if count == 0:
+                        condition_causediv = Q(causediv__name__icontains=A)
+                    else:
+                        condition_causediv = condition_causediv | Q(causediv__name__icontains=A)
+                    count +=1
+
+            if len(Checklist_A_cb) != 0 and Checklist_A_cb[0]:
+                count = 0
+                for A in Checklist_A_cb:
+                    if count == 0:
+                        condition_checklist = Q(checklist__name__icontains=A)
+                    else:
+                        condition_checklist = condition_checklist | Q(checklist__name__icontains=A)
+                    count +=1
+
+            if len(overview) != 0 and overview[0]:
+                word_split = overview.split()
+                count = 0
+                for A in word_split:
+                    if count == 0:
+                        condition_overview = Q(overview__icontains=A)
+                    else:
+                        condition_overview = condition_overview and Q(overview__icontains=A)
+                    count +=1
+#                print(condition_overview)
+                    
+            if len(content) != 0 and content[0]:
+                word_split = content.split()
+                count = 0
+                for A in word_split:
+                    if count == 0:
+                        condition_content = Q(content__icontains=A)
+                    else:
+                        condition_content = condition_content and Q(content__icontains=A)
+                    count +=1
+#                print(condition_content)
+
+            if len(cause) != 0 and cause[0]:
+                word_split = cause.split()
+                count = 0
+                for A in word_split:
+                    if count == 0:
+                        condition_cause = Q(cause__icontains=A)
+                    else:
+                        condition_cause = condition_cause and Q(cause__icontains=A)
+                    count +=1
+#                print(condition_cause)
+
+            if len(counterplan) != 0 and counterplan[0]:
+                word_split = counterplan.split()
+                count = 0
+                for A in word_split:
+                    if count == 0:
+                        condition_counterplan = Q(counterplan__icontains=A)
+                    else:
+                        condition_counterplan = condition_counterplan and Q(counterplan__icontains=A)
+                    count +=1
+#                print(condition_counterplan)
+
+#            if len(author) != 0 and author[0]:
+#                word_split = author.split()
+#                count = 0
+#                for A in word_split:
+#                    if count == 0:
+#                        condition_author = Q(author__user__icontains=A)
+#                    else:
+#                        condition_author = condition_author and Q(author__user__icontains=A)
+#                    count +=1
+#                print(condition_counterplan)
+
+            return Post.objects.select_related().filter(
+                                        condition_equipment  
+                                        & condition_overview  
+                                        & condition_content 
+                                        & condition_cause 
+                                        & condition_counterplan  
+                                        & condition_category  
+                                        & condition_subcategory 
+                                        & condition_state 
+                                        & condition_discoverydiv 
+                                        & condition_severity 
+                                        & condition_causediv 
+                                        & condition_checklist
+                                        & condition_author
+                                        )
         else:
             # 何も返さない
             return Post.objects.none()
@@ -146,18 +635,23 @@ class Searchlistview(ListView):
 class SearchPostView(ListView):
     model = Post
     template_name = 'posts/search_post.html'
-    paginate_by = 3
 
     def get_queryset(self):
         query = self.request.GET.get('q', None)
         lookups = (
-            Q(equipment__name__icontains=query) |
-            Q(overview__icontains=query) |
-            Q(content__icontains=query) |
-            Q(category__name__icontains=query) |
-            Q(subcategory__name__icontains=query) | 
-            Q(cause__icontains=query) |
-            Q(couunterplan__icontains=query)
+             Q(equipment__name__icontains=query)
+             | Q(category__name__icontains=query)
+             | Q(subcategory__name__icontains=query)
+             | Q(state__name__icontains=query)
+             | Q(discoverydiv__icontains=query)
+             | Q(severity__icontains=query) 
+             | Q(overview__icontains=query)
+             | Q(content__icontains=query)
+             | Q(causediv__icontains=query) 
+             | Q(cause__icontains=query)
+             | Q(counterplan__icontains=query)  
+             | Q(checklist__name__icontains=query)
+#             | Q(author__user__icontains=query)
         )
         if query is not None:
             qs = super().get_queryset().filter(lookups).distinct()
@@ -460,6 +954,50 @@ class PopupSubcategoryCreate(SubcategoryCreate):
         }
 #        return render(self.request, 'posts/close.html', context)
         return render(Subcategory.request, 'posts/close.html', context)
+
+
+#
+# 検索用のキーワードを分割する関数
+#
+
+def normalize_query(query_string,
+    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
+    normspace=re.compile(r'\s{2,}').sub):
+
+    '''
+    Splits the query string in invidual keywords, getting rid of unecessary spaces and grouping quoted words together.
+    Example:
+    >>> normalize_query('  some random  words "with   quotes  " and   spaces')
+        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+    '''
+
+    return [normspace(' ',(t[0] or t[1]).strip()) for t in findterms(query_string)]
+
+#
+# 検索用のキーワードを分割する関数
+#
+def get_query(query_string, search_fields):
+
+    '''
+    Returns a query, that is a combination of Q objects. 
+    That combination aims to search keywords within a model by testing the given search fields.
+    '''
+
+    query = None # Query to search for every search term
+    terms = normalize_query(query_string)
+    for term in terms:
+        or_query = None # Query to search for a given term in each field
+        for field_name in search_fields:
+            q = Q(**{"%s__icontains" % field_name: term})
+            if or_query is None:
+                or_query = q
+            else:
+                or_query = or_query | q
+        if query is None:
+            query = or_query
+        else:
+            query = query & or_query
+    return query
 
 ##-----------------------------------------------------------------
 #class CommentFormView(CreateView):

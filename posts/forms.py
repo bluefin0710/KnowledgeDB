@@ -4,17 +4,17 @@ from django import forms
 from .models import Post
 from .models import (
             Equipment,
-            Category,
+#            Category,
             Subcategory,
-            State,
-            Checklist_A,
-            ContentImage,
+#            State,
+#            Checklist_A,
+#            ContentImage,
             ContentFile,
             )
 
 from .models import (
-            CATEGORY_CHOICES,
-            STATE_CHOICES,
+#            CATEGORY_CHOICES,
+#            STATE_CHOICES,
             DISCOVERYDIV_CHOICES,
             SEVERITY_CHOICES,
             CAUSEDIV_CHOICES,
@@ -50,9 +50,9 @@ from .models import (
 #        fields = ('content_file',)
 
 
-CATEGORY_CHOICES = [('', '------')] + CATEGORY_CHOICES
+#CATEGORY_CHOICES = [('', '------')] + CATEGORY_CHOICES
 
-STATE_CHOICES = [('', '------')] + STATE_CHOICES
+#STATE_CHOICES = [('', '------')] + STATE_CHOICES
 
 DISCOVERYDIV_CHOICES = [('', '------')] + DISCOVERYDIV_CHOICES
 
@@ -89,7 +89,6 @@ class PostForm(ModelForm):
 
     class Meta:
         model = Post
-#        exclude = ('checklist',)
         fields = (
                 'equipment',
                 'category',
@@ -100,23 +99,14 @@ class PostForm(ModelForm):
                 'severity',
                 'overview',
                 'content',
-#                'actual_file1',
-#                'actual_file2',
-#                'Image_file1',
-#                'Image_file2',
                 'causediv',
                 'cause',
-#                'actual_file3',
-#                'actual_file4',
-#                'Image_file3',
-#                'Image_file4',
                 'counterplan',
-#                'actual_file5',
-#                'Image_file5',
                 'checklist',
                 'evidence',
                 'completiondate',
-#                'urllink',               
+#                'url_link',               
+                'file_link',
                 )
         widgets = {
 #            'subtitle': forms.TextInput(attrs={'size': 40}),
@@ -169,84 +159,89 @@ class SearchForm(forms.Form):
 #            label='機種名称',
 #    )
     equipment = forms.CharField(
-        max_length=512, 
+        max_length=128, 
         initial='',
         label='機種名称',
         required=False,  # 必須ではない
     )
     overview = forms.CharField(
-        max_length=512, 
+        max_length=128, 
         initial='',
         label='発見概要',
         required=False,  # 必須ではない
     )
     content = forms.CharField(
-        max_length=512, 
+        max_length=128, 
         initial='',
         label='発見内容',
         required=False,  # 必須ではない
     )
     category = forms.CharField(
-        max_length=512, 
+        max_length=128, 
 #        choices=CATEGORY_CHOICES,
         initial='',
         label='大分類',
         required=False,  # 必須ではない
     )
     subcategory = forms.CharField(
-        max_length=512, 
+        max_length=128, 
 #        choices=CATEGORY_CHOICES,
         initial='',
         label='小分類',
         required=False,  # 必須ではない
     )
-    vstate = forms.CharField(
-        max_length=512, 
+    state = forms.CharField(
+        max_length=128, 
 #        choices=STATE_CHOICES,
         initial='',
         label='状態',
         required=False,  # 必須ではない
     )
     discoverydiv = forms.CharField(
-        max_length=512, 
+        max_length=128, 
 #        choices=DISCOVERYDIV_CHOICES,
         initial='',
         label='発見区分',
         required=False,  # 必須ではない
     )
     severity = forms.CharField(
-        max_length=512, 
+        max_length=128, 
 #        choices=SEVERITY_CHOICES,
         initial='',
         label='重大度',
         required=False,  # 必須ではない
     )
     causediv = forms.CharField(
-        max_length=512, 
+        max_length=128, 
 #        choices=CAUSEDIV_CHOICES,
         initial='',
         label='原因区分',
         required=False,  # 必須ではない
     )
     cause = forms.CharField(
-        max_length=512, 
+        max_length=128, 
         initial='',
         label='原因内容',
         required=False,  # 必須ではない
     )
     counterplan = forms.CharField(
-        max_length=512, 
+        max_length=128, 
         initial='',
         label='対策内容',
         required=False,  # 必須ではない
     )
-#    checklist = forms.ChoiceField(
-#        choices=CHECKLIST_CHOICES,
-#        initial='',
-#        label='チェックリスト',
-#        required=False,  # 必須ではない
-#    )
-
+    checklist = forms.CharField(
+        max_length=128, 
+        initial='',
+        label='チェックリスト',
+        required=False,  # 必須ではない
+    )
+    author = forms.CharField(
+        max_length=128, 
+        initial='',
+        label='登録者',
+        required=False,  # 必須ではない                
+    )
 
 
 #class Image_FileForm(ModelForm):

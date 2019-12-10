@@ -12,6 +12,9 @@ from .models import (
         State,
 #        ContentImage,
         ContentFile,
+        Causediv,
+        Discoverydiv,
+        Severity,
         )
 
 
@@ -38,4 +41,8 @@ admin.site.register(Category)
 admin.site.register(Subcategory)
 admin.site.register(State)
 admin.site.register(Checklist_A)
+admin.site.register(Causediv)
+admin.site.register(Discoverydiv)
+admin.site.register(Severity)
 admin.site.register(Post,PostAdmin)
+

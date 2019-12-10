@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'posts.apps.PostsConfig',   #App
-    'bootstrap4',  # django-bootstrap4
+#    'bootstrap4',  # django-bootstrap4
 ]
 
 MIDDLEWARE = [
@@ -103,11 +103,12 @@ DATABASES = {
         'default': {
                 'ENGINE':'django.db.backends.mysql',
 #                 'NAME':'masterdb',
-#                 'USER':'root',
-#                 'HOST':'127.0.0.1',
-                 'NAME':'nmcmh01$MasterDB',
-                 'USER':'nmcmh01',
-                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
+                 'NAME':'knowledgedb',
+                 'USER':'root',
+                 'HOST':'127.0.0.1',
+#                 'NAME':'nmcmh01$MasterDB',
+#                 'USER':'nmcmh01',
+#                 'HOST':'nmcmh01.mysql.pythonanywhere-services.com',
                  'PASSWORD':'mysqlroot',
                  'PORT':'3306',
                  'AUTOMIC_REQUESTS':True,
@@ -181,3 +182,50 @@ MEDIA_URL = '/media/'
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'static'),
 #]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'django.server': {
+            '()': 'django.utils.log.ServerFormatter',
+            'format': '[%(server_time)s] %(message)s a',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'django.server': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django.server',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        },
+        'django.server': {
+            'handlers': ['django.server'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    }
+}

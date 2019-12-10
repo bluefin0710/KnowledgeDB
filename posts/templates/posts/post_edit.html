@@ -2,6 +2,7 @@
 
 {% load static %}
 
+{% csrf_token %}
 
 
 <!--
@@ -60,11 +61,12 @@ function openWin_subcategory(){
 
 </script>
 
-<div class="container container-fluid">
-    <div class="row">
-    <main class="col-md-8">
-
+<div class="container container-fluid　 style="margin-top: 60px;">
+<div class="card mb-3">
     <h3>編集</h3>
+
+    <div class="row">
+        <div class="col-md-11 offset-md-1" > 
 
 
 {% if user.is_authenticated %}
@@ -293,7 +295,8 @@ function openWin_subcategory(){
         <!--    {{ form.checklist }} -->
         <!-- チェックリストを横表示にする処理追加　-->
         <hr>
-    	<div class="form-group>
+        <div class="col-md"> 
+    	<div class="form-group">
     	<!-- div class="form-group row my-12" -->
             <!-- div class="col-sm-3 col-form-label" -->
                 {{ form.checklist.label_tag }}<br>
@@ -302,12 +305,13 @@ function openWin_subcategory(){
 
     		<!-- div class="col-lg-10 form-check" -->
 
-        	<div class="row"><div class="col-sm-9 form-check">
       			{% for c in form.checklist %}
+                    <div class="form-check form-check-inline">
         			{{ c }} 
+       			    </div>
     			{% endfor %}
-    		</div></div>
             {{ form.checklist.errors }}
+        </div>
         </div>
         <div class="form-group">
         <div class="field">
@@ -315,6 +319,15 @@ function openWin_subcategory(){
             <span class="helptext">{{ form.evidence.help_text }}</span>
             {{ form.evidence }}
             {{ form.evidence.errors }}
+        </div>
+        </div>
+        <hr>
+        <div class="form-group">
+        <div class="field">
+            {{ form.file_link.label_tag }}
+            <span class="helptext">{{ form.file_link.help_text }}</span>
+            {{ form.file_link }}
+            {{ form.file_link.errors }}
         </div>
         </div>
         <hr>
@@ -338,6 +351,8 @@ function openWin_subcategory(){
         <hr>
         <div class="form-group">
         <div class="field">
+            <p>※最大5つのファイルが添付できます。4つ目以降の添付ファイルは保存した後に再度、編集画面で登録してください。</p>
+            <p>画像を添付する際はInfoCageの保護を解除して※最大5つのファイルが添付できます。4つ目以降の添付ファイルは保存した後に再度、編集画面で登録してください。</p>
             {{ formset.management_form }}
             {% for file_form in formset %}
 
@@ -379,8 +394,9 @@ function openWin_subcategory(){
   <a href="{% url 'posts:login' %}">login</a>
 {% endif %}
 
-    </main>
     </div>
+    </div>
+</div>
 </div>
 
 {% endblock %}

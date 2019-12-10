@@ -20,6 +20,8 @@
      <h3>検索条件</h3>
     <form method="POST">
         {% csrf_token %}
+
+{% comment %}
         {% for field in test_form %}
             <div class="form-group form-inline">
                 <label class="col-md-offset-2 col-md-3 control-label">{{ field.label }}:</label>
@@ -28,6 +30,150 @@
                 </div>
             </div>
         {% endfor %}
+{% endcomment %}
+
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.equipment.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Equipment_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Equipment_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Equipment_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+         </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.category.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Category_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Category_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Category_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+         </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.subcategory.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Subcategory_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Subcategory_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Subcategory_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+         </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.state.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in State_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="State_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="State_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+         </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.discoverydiv.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Discoverydiv_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+         </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.severity.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Severity_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Severity_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Severity_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.causediv.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Causediv_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Causediv_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Causediv_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.checklist.label }}:</label>
+            <div class="col-md-8">
+                {% for K, V in Checklist_A_DICT.items %}
+                    {% if V ==  1 %}
+                            <input type="checkbox" name="Checklist_A_cb" value="{{ K }}" checked>{{ K }}
+                    {% else %}
+                            <input type="checkbox" name="Checklist_A_cb" value="{{ K }}">{{ K }}
+                    {%　endif　%}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.overview.label }}:</label>
+            <div class="col-md-8">
+                    {{ test_form.overview }}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.content.label }}:</label>
+            <div class="col-md-8">
+                    {{ test_form.content }}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.cause.label }}:</label>
+            <div class="col-md-8">
+                    {{ test_form.cause }}
+            </div>
+        </div>
+
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.counterplan.label }}:</label>
+            <div class="col-md-8">
+                    {{ test_form.counterplan }}
+            </div>
+        </div>
+
+{% comment %}
+        <div class="form-group form-inline">
+            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.author.label }}:</label>
+            <div class="col-md-8">
+                    {{ test_form.author }}
+            </div>
+        </div>
+{% endcomment %}
+
         <input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="検索">
     </form>
 
@@ -42,18 +188,22 @@
                 <thead>
                     <tr>
                         <th scope="col">管理番号</th>
-                        <th scope="col">機種名</th>
+                        <th scope="col">機種名称</th>
+                        <th scope="col">発見概要</th>
                         <th scope="col">発見内容</th>
-                        <th scope="col">原因</th>
+                        <th scope="col">原因内容</th>
+                        <th scope="col">対策</th>
                    </tr>
                 </thead>                
                 <tbody>
                 {% for post in object_list %}
                     <tr>
-                        <td width=10%><a href ="{% url 'posts:post_detail' post.id %}">{{ post.id }}</a></td>
-                        <td width=20%><a href ="{% url 'posts:post_detail' post.id %}">{{ post.equipment }}</a></td>
-                        <td width=35%>{{ post.content }}</td>
-                        <td width=35%>{{ post.cause }}</td>
+                        <td width=6%><a href ="{% url 'posts:post_detail' post.id %}">{{ post.id }}</a></td>
+                        <td width=6%><a href ="{% url 'posts:post_detail' post.id %}">{{ post.equipment }}</a></td>
+                        <td width=22%>{{ post.overview }}</td>
+                        <td width=22%>{{ post.content }}</td>
+                        <td width=22%>{{ post.cause }}</td>
+                        <td width=22%>{{ post.counterplan }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
