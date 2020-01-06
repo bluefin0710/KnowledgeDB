@@ -20,6 +20,11 @@
                             <a class="nav-link" href="https://m.gisp.nec.com/magportal/SitePages/Home.aspx" target="_blank">MAGNUSポータル</a>
                         </li>
                             {% if request.user.is_authenticated %}
+{% comment %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'posts:mypage' %}">マイページ <span class="sr-only">(current)</span></a>
+                                </li>
+{% endcomment %}
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'posts:logout' %}">ログアウト({{ user }}さんでログイン中) <span class="sr-only">(current)</span></a>
                                 </li>

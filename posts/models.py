@@ -60,6 +60,8 @@ CAUSEDIV_CHOICES = [
         ('その他', 'その他'),
     ]
 
+#-----------------------------------------------------------------------------
+
 
 #
 #CHECKLIST_CHOICES = [
@@ -236,12 +238,22 @@ class Post(models.Model):
 #            verbose_name='状態',
 #            help_text='※必須',
 #            )
-    discoverydate = models.DateField(
-            null=False, 
-            blank=False,
+
+#    discoverydate = models.DateField(
+#            null=False, 
+#            blank=False,
+#            verbose_name='発見日',
+#            help_text='※必須',
+#            )   
+
+    discoverydate = models.CharField(
+            max_length=10, 
+            null=True, 
+            blank=True,
             verbose_name='発見日',
             help_text='※必須',
             )   
+
 #    discoverydiv = models.CharField(
 #            choices=DISCOVERYDIV_CHOICES,
 #            null=False, 
@@ -250,7 +262,7 @@ class Post(models.Model):
 #            verbose_name='発見カテゴリ',
 #            help_text='※必須',
 #            )
-#
+
 #---発見カテゴリの外部テーブルバージョン
     discoverydiv = models.ForeignKey(
             Discoverydiv, 
@@ -279,7 +291,6 @@ class Post(models.Model):
             verbose_name='重大度',
             help_text='※必須',
             )
-
     overview = models.TextField(
             verbose_name='発見概要',
             help_text='※必須',
@@ -288,6 +299,7 @@ class Post(models.Model):
             verbose_name='発見内容',
             help_text='※必須',
             )
+
 #    causediv = models.CharField(
 #            choices=CAUSEDIV_CHOICES,
 #            null=True, 
@@ -306,7 +318,6 @@ class Post(models.Model):
             verbose_name='原因区分',
             help_text='',
             )
-
     cause = models.TextField(
             blank=True, 
             default='',
@@ -344,23 +355,30 @@ class Post(models.Model):
             verbose_name='関連資料の置き場（共有ファイルサーバーのパス）',
             help_text='※任意　パスの存在はチェックしていません。正しいパスを入力してください。',
             )
-    completiondate = models.DateField(
+#    completiondate = models.DateField(
+#            null=True, 
+#            blank=True,
+#            verbose_name='完了日',
+#            help_text='',
+#            )
+    completiondate = models.CharField(
+            max_length=10, 
             null=True, 
             blank=True,
             verbose_name='完了日',
             help_text='',
-            )
+            )   
     author = models.ForeignKey(
            'auth.User', 
              null=True, 
             blank=True,
             on_delete=models.CASCADE,
             )    
-    published_date = models.DateTimeField(
-            null=True, 
-            blank=True,
-            ) 
-    created_at = models.DateTimeField(
+    published_date = models.DateTimeField( #published_atと重複しているので、削除対象
+            null=True,
+            blank=True, 
+            )
+    created_at = models.DateField(
             auto_now_add=True,
             )
     updated_at = models.DateTimeField(
@@ -387,9 +405,12 @@ class Post(models.Model):
 #admin サイトで、オブジェクトをわかりやすく表示するために指定        
     def __str__(self):
         return self.overview[:15]
+#        return self.pk
 
     def summary(self):
         return self.content[:30]
+
+#-----------------------------------------------------------------------------
 
 class ContentImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -426,10 +447,115 @@ class ContentFile(models.Model):
 #                                 help_text='添付したファイルタイプ',                                
 #                                 )
 
+#-----------------------------------------------------------------------------
+class Factordiv(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+#-- 追加項目：市場への波及性
+class MarketSpillover(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    reason = models.TextField(
+            blank=True, 
+            default='',
+            verbose_name='理由',
+            help_text='',
+            )
+#    factordiv = models.ForeignKey(Factordiv, on_delete=models.CASCADE)
+#            null=True, 
+#            blank=True,
+#            verbose_name='要因',
+#            help_text='(※「その他」を選択した場合、その内容を理由の欄に記入してください。)',
+#            )
+    factor = models.CharField(
+            max_length=25, 
+            null=True, 
+            blank=True,
+            verbose_name='要因',
+            help_text='(「作業者」、「部品」、「設計」、「設備」、「作業指導」等)',
+            )
+    shippingdate_start = models.CharField(
+            max_length=10, 
+            null=True, 
+            blank=True,
+            verbose_name='対象品出荷開始日',
+            help_text='',
+            )   
+    shippingdate_end = models.CharField(
+            max_length=10, 
+            null=True, 
+            blank=True,
+            verbose_name='対象品出荷終了日',
+            help_text='',
+            )   
+    shipping = models.CharField(
+            max_length=255, 
+            null=True, 
+            blank=True,
+            verbose_name='出荷先',
+            help_text='',
+            )
+    serial_start = models.CharField(
+            max_length=255,
+            null=True, 
+            blank=True,
+            verbose_name='対象製造番号開始',
+            help_text='',
+            )
+    serial_end = models.CharField(
+            max_length=255,
+            null=True, 
+            blank=True,
+            verbose_name='対象製造番号終了',
+            help_text='',
+            )
+    targetno = models.CharField(
+            max_length=255,
+            null=True, 
+            blank=True,
+            verbose_name='対象台数',
+            help_text='',
+            )
+    influence = models.TextField(
+            blank=True, 
+            default='',
+            verbose_name='他機種への影響',
+            help_text='',             
+            )
+
+#-----------------------------------------------------------------------------
+#--登録内容に対するコメント
+class Comment(models.Model):
+    """コメント."""
+    name = models.CharField(max_length=255, blank=True)
+    text = models.TextField()
+    target = models.ForeignKey(Post, on_delete=models.CASCADE)
+    is_publick = models.BooleanField(default=False)
+ 
+    def __str__(self):
+        return self.name
+  
+#--登録内容に対するコメントの返信
+class Reply(models.Model):
+    """返信コメント."""
+    name = models.CharField(max_length=255, blank=True)
+    text = models.TextField()
+    target = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    is_public = models.BooleanField(default=False)
+ 
+    def __str__(self):
+        return self.name
+    
+#-----------------------------------------------------------------------------
+
 def user_portfolio_directory_path(instance, filename):
     return 'image-{0}/{1}'.format(instance.id, filename)
 
 #class Image_file(models.Model):
-#    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+# ｍ   id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 #    image = models.ImageField(upload_to=user_portfolio_directory_path, null=True, blank=True)
 #    uploaded_at = models.DateTimeField(auto_now_add=True)

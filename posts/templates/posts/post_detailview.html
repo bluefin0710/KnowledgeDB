@@ -31,48 +31,34 @@
                 <p class="text-muted">重要度： {{ post.severity }}</p>
 -->
                     <div class="card-body" >
-                        <div class="card-text">発見日：{{ post.discoverydate }}　　発見区分：{{ post.discoverydiv }}　　重要度：{{ post.severity }}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">発見概要：</h6> <div class="card-text">{{ post.overview | linebreaksbr}}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">発見内容：</h6> <div class="card-text">{{ post.content | linebreaksbr}}</div>
-                    </div>
+                        <div class="card-text">発見日：{{ post.discoverydate }}　　発見区分：{{ post.discoverydiv }}　　重要度：{{ post.severity }}</div><BR/>
+                        <h5 class="text-white bg-info" class="card-title">発見概要：</h5> <div class="card-text">{{ post.overview | linebreaksbr}}</div><BR/>
+                        <h5 class="text-white bg-info" class="card-title">発見内容：</h5> <div class="card-text">{{ post.content | linebreaksbr}}</div><BR/>
                     <hr>
                     <div class="card-body" >
-                        <h6 class="card-title">原因区分：</h6> <div class="card-text">{{ post.causediv }}</div>
+                        <h5 class="text-white bg-info" class="card-title">原因区分：</h5> <div class="card-text">{{ post.causediv }}</div><BR/>
+                        <h5 class="text-white bg-info"  class="card-title">原因内容：</h5> <div class="card-text">{{ post.cause }}</div><BR/>
+                        <h5 class="text-white bg-info" class="card-title">処置内容：</h5> <div class="card-text">{{ post.counterplan }}</div><BR/>
+                        <h5 class="text-white bg-info" class="card-title">チェックリスト：</h5> <div class="card-text">{% for check in post.checklist.all %}{{ check }}、　{% endfor %}</div><BR/>
+                        <h5 class="text-white bg-info" class="card-title">チェックリストエビデンス：</h5> <div class="card-text">{{ post.evidence }}</div><BR/>
                     </div>
+                    <hr>
+                    {% if post.file_link %}
                     <div class="card-body" >
-                        <h6 class="card-title">原因内容：</h6> <div class="card-text">{{ post.cause }}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">処置内容：</h6> <div class="card-text">{{ post.counterplan }}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">チェックリスト：</h6> <div class="card-text">{% for check in post.checklist.all %}　{{ check }},　{% endfor %}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">チェックリストエビデンス：</h6> <div class="card-text">{{ post.evidence }}</div>
-                    </div>
-                    <div class="card-body" >
-                        <h6 class="card-title">共有ファイルサーバ：</h6>
+                        <h5 class="text-white bg-info" class="card-title">共有ファイルサーバ：</h5>
                             <div class="card-text">
-                                {% if post.file_link %}
-                                    <a href="file://{{ post.file_link }}"  target="_blank">{{ post.file_link }}</a>
-                                    <br>(※参照するには右クリックで「ショートカット(リンク)のコピー」を選択して、
-                                    <br>エクスプローラまたはWEBブラウザのアドレス入力欄にコピーしたショートカットを張り付けてください。) 
-                               {% endif %}
+                                    <a href="{{ post.file_link }}"  target="_blank">{{ post.file_link }}</a>
                             </div>
                     </div>
+                    {% endif %}
                     <hr>
                     <div class="card-body" >
-                        <h6 class="card-title">完了日：</h6> <div class="card-text">{{ post.completiondate }}</div>
+                        <h5 class="text-white bg-info" class="card-title">完了日：</h5> <div class="card-text">{{ post.completiondate }}</div>
                     </div>
                     <hr>
                     <div class="card-body" >
                         {% for AttachedFile in post.contentfile_set.all %}
-                            <h6 class="card-title">添付ファイル：</h6>
+                            <h5 class="text-white bg-info" class="card-title">添付ファイル：</h5>
                             <div class="card-text">
                                 <a href="{{ AttachedFile.content_file.url }}" target="_blank">
                                     {{ AttachedFile.content_file }}
@@ -85,17 +71,42 @@
                         {% endfor %}
                     </div>
                     <div class="card-body" >
-                        <div class="text-muted">登録者：{{ post.author }}　　登録日：{{ post.created_at }}　　最終更新日：{{ post.updated_at }}</div>
+                        {% for ms_fields in post.marketspillover_set.all %}
+                            <h5 class="card-title">【市場への波及性】</h5>
+                            <h6 class="text-white bg-info" class="card-title">理由：</h6>
+                            <div class="card-text">{{ ms_fields.reason }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">要因：</h6>
+                            <div class="card-text">{{ ms_fields.factor }}</div><BR/>
+{% comment %}
+                            <div class="card-text">{{ ms_fields.factordiv }}</div><BR/>
+{% endcomment %}
+                            <div class="card-text">{{ ms_fields.factordiv }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">対象品出荷日：</h6>
+                            <div class="card-text">{{ ms_fields.shippingdate_start }}～{{ ms_fields.shippingdate_end }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">出荷先：</h6>
+                            <div class="card-text">{{ ms_fields.shipping }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">対象製造番号：</h6>
+                            <div class="card-text">{{ ms_fields.serial_start }}～{{ ms_fields.serial_end }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">対象台数：</h6>
+                            <div class="card-text">{{ ms_fields.targetno }}</div><BR/>
+                            <h6 class="text-white bg-info" class="card-title">他の機種への影響：</h6>
+                            <div class="card-text">{{ ms_fields.influence }}</div><BR/>                            
+                        {% endfor %}
                     </div>
-                    <BR>
+                    <div class="card-body" >
+                        <div class="text-muted">登録者：{{ post.author }}　　登録日：{{ post.created_at }}　　最終更新日：{{ post.updated_at }}</div><BR/>
+                    </div>
                     {% if user.is_authenticated %}
-                        <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}" >編集</a> 
+                        <a class="btn-lg btn-primary" href="{% url 'posts:post_edit' post.id %}" >編集</a> 
                     {% endif %}
+
+                        <a class="btn-lg btn-primary" href="{% url 'posts:post_print' post.id %}"  target="_blank"　onclick='return confirm("印刷しますか？");'>印刷</a>
+
                     {% if request.user == post.author %}
-                        <a class="btn btn-primary" href="{% url 'posts:post_delete' post.id %}" onclick='return confirm("本当に削除しますか？");'>削除</a>
+                        <a class="btn-lg btn-primary" href="{% url 'posts:post_delete' post.id %}" onclick='return confirm("削除します。いいですか？");'>削除</a>
                     {% endif %}
-                    <a class="btn btn-primary" href="javascript:void(0);" onclick="window.history.back();">前の画面に戻る</a>
-                    <a class="btn btn-primary" href="{% url 'posts:index_listview' %}" >全一覧表示</a>
+                    <a class="btn-lg btn-primary" href="javascript:void(0);" onclick="window.history.back();">前の画面に戻る</a>
+                    <a class="btn-lg btn-primary" href="{% url 'posts:index_listview' %}" >全一覧表示</a>
  
                 </div>
             </div><!-- end col-md-6 offset-md-3 -->

@@ -30,7 +30,14 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='posts/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    
+
+    path('mypage/', views.MypageView.as_view(), name='mypage'),
+
+#    path('print', views.PrintView.as_view(), name='print'),
+#    path('excel', views.ExcelView.as_view(), name='excel'),
+#    path('csv', views.CsvView.as_view(), name='csv'),
+    path('<int:pk>/print/', views.PrintView.as_view(), name='post_print'),
+  
     path('<int:pk>/', Postdetailview.as_view(), name='post_detail'),
     path('<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('<int:pk>/delete/', views.post_delete, name='post_delete'),

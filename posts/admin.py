@@ -15,6 +15,8 @@ from .models import (
         Causediv,
         Discoverydiv,
         Severity,
+        MarketSpillover,
+        Factordiv,
         )
 
 
@@ -26,16 +28,20 @@ class ContentFileInline(admin.TabularInline):
     model = ContentFile
     extra = 1
 
+class MarketSpilloverInline(admin.TabularInline):
+    model = MarketSpillover
+    extra = 1
+
 class PostAdmin(admin.ModelAdmin):
     inlines = [
 #        ContentImageInline,
         ContentFileInline,
+        MarketSpilloverInline,
     ]    
 #    list_display = ['catergory',]
 #    list_display = ('id','equipment', 'catergory', 'subcatergory', 'subtitle', 'discoverydate', ) 
 
 #admin.site.register(Post)
-
 admin.site.register(Equipment)
 admin.site.register(Category)
 admin.site.register(Subcategory)
@@ -45,4 +51,5 @@ admin.site.register(Causediv)
 admin.site.register(Discoverydiv)
 admin.site.register(Severity)
 admin.site.register(Post,PostAdmin)
-
+admin.site.register(Factordiv)
+admin.site.register(MarketSpillover)

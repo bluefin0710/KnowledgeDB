@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.db.models import Count,Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView,DeleteView
@@ -19,6 +20,7 @@ from posts.forms import (
                 FileFormset, 
                 EquipmentForm, 
                 SubcategoryForm,
+                SpilloverFormset, 
             )
 from posts.models import (
                 Post,
@@ -84,6 +86,17 @@ class Searchlistview(ListView):
                 self.request.POST.get('cause', None),
                 self.request.POST.get('counterplan', None),
                 self.request.POST.get('author', None),
+
+#                self.request.POST.get('created_date', None),
+#                self.request.POST.get('created_date_e', None),
+#                self.request.POST.get('discovery_date', None),
+#                self.request.POST.get('discovery_date_e', None),
+
+                self.request.POST.get('created_date_get', None),
+                self.request.POST.get('created_date_e_get', None),
+                self.request.POST.get('discovery_date_get', None),
+                self.request.POST.get('discovery_date_e_get', None),
+
 #                self.request.POST.get('equipment', None),
 #                self.request.POST.get('category', None),
 #                self.request.POST.get('subcategory', None),
@@ -119,6 +132,10 @@ class Searchlistview(ListView):
         cause = ''
         counterplan = ''
         author = ''
+        created_date = ''
+        created_date_e = ''
+        discovery_date = ''
+        discovery_date_e = ''
 #        category = ''
 #        subcategory = ''
 #        state = ''
@@ -181,6 +198,37 @@ class Searchlistview(ListView):
             counterplan = form_value[11]
             author = form_value[12]
 
+#---- for debug
+#            print("get_context_data______form_value--------------")
+#            print(form_value[13])
+#            print(form_value[14])
+#            print(form_value[15])
+#            print(form_value[16])
+#            print("----------------------------")
+#
+#            table = str.maketrans('/', '-',)
+#            created_date = form_value[13].translate(table)
+#            created_date_e = form_value[14].translate(table)
+#            discovery_date = form_value[15].translate(table) 
+#            discovery_date_e = form_value[16].translate(table)
+#
+#            print("get_context_data______created_date--------------")
+#            print(created_date)
+#            print(created_date_e)
+#            print(discovery_date)
+#            print(discovery_date_e)
+#            print("----------------------------")
+            
+#            print(form_value[14])
+#            print(created_date_e)
+
+            created_date = form_value[13]
+            created_date_e = form_value[14]
+            discovery_date = form_value[15]
+            discovery_date_e = form_value[16]
+
+#            print(created_date_e)
+
 #            print("form_value[0]:")
 #            print(form_value[0])
 #            print("form_value[1]:")
@@ -205,6 +253,18 @@ class Searchlistview(ListView):
 #            print(form_value[10])
 #            print("form_value[11]:")
 #            print(form_value[11])
+
+#            print("form_value[12]:")
+#            print(form_value[12])
+
+#            print("form_value[13]:")
+#            print(form_value[13])
+#            print("form_value[14]:")
+#            print(form_value[14])
+#            print("form_value[15]:")
+#            print(form_value[15])
+#            print("form_value[16]:")
+#            print(form_value[16])
 
 
             #データをDICT型で構成し、チェックボックスで、チェックしたkey(機種名称)のvalueを１にする
@@ -354,6 +414,10 @@ class Searchlistview(ListView):
                         'cause': cause,  # 原因
                         'counterplan': counterplan,  # 対策
                         'author': author,  # 登録者
+                        'created_date': created_date,
+                        'created_date_e': created_date_e,
+                        'discovery_date': discovery_date, 
+                        'discovery_date_e': discovery_date_e, 
 #                        'category': category,  # 大分類
 #                        'subcategory': subcategory,  # 小分類
 #                        'state': state,
@@ -453,6 +517,34 @@ class Searchlistview(ListView):
             cause = form_value[10]
             counterplan = form_value[11]
             author = form_value[12]
+#            created_date = form_value[13]
+#            created_date_e = form_value[14]
+#            discovery_date = form_value[15] 
+#            discovery_date_e = form_value[16]
+            #日付のフォーマット変換。「/」を「-」にする
+
+
+#---- for debug
+#            print("form_value--------------")
+#            print(form_value[13])
+#            print(form_value[14])
+#            print(form_value[15])
+#            print(form_value[16])
+#            print("----------------------------")
+
+            table = str.maketrans('/', '-',)
+            created_date = form_value[13].translate(table)
+            created_date_e = form_value[14].translate(table)
+            discovery_date = form_value[15].translate(table) 
+            discovery_date_e = form_value[16].translate(table)
+
+ #---- for debug
+#           print("created_date--------------")
+#            print(created_date)
+#            print(created_date_e)
+#            print(discovery_date)
+#            print(discovery_date_e)
+#            print("----------------------------")
 
             # 検索条件
             condition_equipment = Q()
@@ -468,6 +560,8 @@ class Searchlistview(ListView):
             condition_cause = Q()
             condition_counterplan = Q()
             condition_author = Q()
+            condition_created_at = Q()
+            condition_discoverydate = Q()
 
 #            if len(equipment) != 0 and equipment[0]:
 #                condition_equipment = Q(equipment__name__icontains=equipment)
@@ -602,16 +696,36 @@ class Searchlistview(ListView):
                     count +=1
 #                print(condition_counterplan)
 
-#            if len(author) != 0 and author[0]:
-#                word_split = author.split()
-#                count = 0
-#                for A in word_split:
-#                    if count == 0:
-#                        condition_author = Q(author__user__icontains=A)
-#                    else:
-#                        condition_author = condition_author and Q(author__user__icontains=A)
-#                    count +=1
-#                print(condition_counterplan)
+            if len(author) != 0 and author[0]:
+                word_split = author.split()
+                count = 0
+                for A in word_split:
+                    if count == 0:
+                        condition_author = Q(author__username__icontains=A)
+                    else:
+                        condition_author = condition_author and Q(author__username__icontains=A)
+                    count +=1
+#                print(condition_author)
+
+            if len(created_date) != 0 and created_date[0]:
+                if len(created_date_e) != 0 and created_date_e[0]:
+                    condition_created_at = Q(created_at__gte=created_date, created_at__lte=created_date_e)
+                else:
+                    condition_created_at = Q(created_at__gte=created_date)
+            elif len(created_date_e) != 0 and created_date_e[0]:
+                    condition_created_at = Q(created_at__lte=created_date_e)
+                
+#            print(condition_created_at)
+
+            if len(discovery_date) != 0 and discovery_date[0]:
+                if len(discovery_date_e) != 0 and discovery_date_e[0]:
+                    condition_discoverydate = Q(discoverydate__gte=discovery_date, discoverydate__lte=discovery_date_e)
+                else:
+                    condition_discoverydate = Q(discoverydate__gte=discovery_date)
+            elif len(discovery_date_e) != 0 and discovery_date_e[0]:
+                    condition_discoverydate = Q(discoverydate__lte=discovery_date_e)
+                
+#            print(condition_discoverydate)
 
             return Post.objects.select_related().filter(
                                         condition_equipment  
@@ -627,6 +741,8 @@ class Searchlistview(ListView):
                                         & condition_causediv 
                                         & condition_checklist
                                         & condition_author
+                                        & condition_created_at
+                                        & condition_discoverydate
                                         )
         else:
             # 何も返さない
@@ -733,7 +849,57 @@ class Postdetailview(DetailView):
 #                'form':form,
 #    })
 
-def post_new(request):
+
+#--2019-12-13 under construction.....
+class MypageView(FormView):
+    template_name = 'posts/mypage_view.html'
+#    form_class = TaskForm
+
+# 印刷・Excel・CSV出力の基底クラス
+class BaseReportView(ListView):
+    model = Post
+
+    # 選択データの取得
+    def get_queryset(self):
+#        id_list = self.request.GET['pk'].split('_')
+        result = Post.objects.filter(Post.pk)
+
+        return result
+
+# 印刷画面表示
+class PrintView(DetailView):
+    model = Post
+    template_name = 'posts/print2.html'
+
+#    context_object_name = 'post'
+#    pk_url_kwarg = 'post_id'
+
+    #-- 「投稿が公開されていない、かつ、ユーザがログインしていない場合は 404 エラーを送出する」
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if not obj.is_public and not self.request.user.is_authenticated:
+            raise Http404
+        return obj
+
+
+
+## Excelダウンロード
+## django-excel-response
+## https://pypi.org/project/django-excel-response/
+#class ExcelView(ExcelMixin, BaseReportView):
+#
+#    # 見出し行を日本語にする
+#    def get_queryset(self):
+#        header = [['id', '県名', '市町村名', 'ふりがな', '郵便番号', '住所', '電話番号', '自治体コード']]
+#        body = [list(entry.values()) for entry in super().get_queryset().values()]
+#        return header + body
+
+## CSVダウンロード
+#class CsvView(ExcelView):
+#    force_csv = True
+#
+
+def post_new_org(request):
     form = PostForm(request.POST or None)
     context = {'form': form}
     if request.method == "POST" and form.is_valid():
@@ -756,7 +922,7 @@ def post_new(request):
 #    return render(request, 'posts/post_edit.html', {'form': form})
     return render(request, 'posts/post_edit.html', context)
 
-def post_edit(request, pk):
+def post_edit_org(request, pk):
     post = get_object_or_404(Post, pk=pk)
     form = PostForm(request.POST or None, instance=post)
     formset = FileFormset(request.POST or None, files=request.FILES or None, instance=post)
@@ -789,6 +955,162 @@ def post_edit(request, pk):
     }
 #    return render(request, 'posts/post_edit.html', {'form': form})
     return render(request, 'posts/post_edit.html', context)
+
+def post_new(request):
+    form = PostForm(request.POST or None)
+    context = {'form': form}
+    if request.method == "POST" and form.is_valid():
+        post = form.save(commit=False)
+        formset = FileFormset(request.POST, files=request.FILES, instance=post)
+        spilloverformset = SpilloverFormset(request.POST or None,files=request.FILES or None, instance=post)
+        if formset.is_valid()  and spilloverformset.is_valid():
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+#            form.save_m2m()
+            form.save()
+            formset.save()
+            spilloverformset.save()
+            return redirect('posts:post_detail', pk=post.pk)
+#           return redirect('post_detail', post_id=post.pk)
+        else:
+#            context['formset'] = formset
+            form = PostForm( instance=post )
+    else:
+#        form = PostForm()
+#        context['formset'] = FileFormset()
+        context = {
+                'form': PostForm(),
+                'formset': FileFormset(),
+                'spilloverformset': SpilloverFormset(),
+#                'formset': formset,
+#                'spilloverformset': spilloverformset,
+                }
+
+#    return render(request, 'posts/post_edit.html', {'form': form})
+    return render(request, 'posts/post_edit.html', context)
+
+def post_edit(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    form = PostForm(request.POST or None, instance=post)
+#    form = PostForm(request.POST or None)
+    formset = FileFormset(request.POST or None, files=request.FILES or None, instance=post)
+    spilloverformset = SpilloverFormset(request.POST or None, files=request.FILES or None, instance=post)
+#--- for debug
+#    print("0")
+    if request.method == "POST":
+#--- for debug
+#        print("1")
+        post = form.save(commit=False)
+        form = PostForm(request.POST or None, instance=post)
+        formset = FileFormset(request.POST or None, files=request.FILES or None, instance=post)
+        spilloverformset = SpilloverFormset(request.POST or None, files=request.FILES or None, instance=post)
+
+#--- for debug
+#        print("-------------post---------------------------------")
+#        print(post)
+#        print("-------------form---------------------------------")
+#        print(form)
+#        print("-------------formset------------------------------")
+#        print(formset)
+#        print("-------------spilloverformset---------------------")
+#        print(spilloverformset)
+#
+#        print("-------------is_valid()---------------------")
+#        print(form.is_valid())
+#        print(formset.is_valid())
+#        print(spilloverformset.is_valid())
+
+        if form.is_valid() and formset.is_valid() and spilloverformset.is_valid():
+#--- for debug
+#            print("2")
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+#            form.save_m2m()
+            form.save()
+            formset.save()
+            spilloverformset.save()
+            return redirect('posts:post_detail', pk=post.pk)
+        else:
+#--- for debug
+#            print("3")
+            form = PostForm( instance=post )
+#    else:
+#--- for debug
+#    print("4")
+
+    context = {
+            'form': form,
+            'formset': formset,
+            'spilloverformset': spilloverformset,
+            }
+ 
+#--- for debug
+#    print("5")
+    return render(request, 'posts/post_edit.html', context)
+
+
+#    print("0")
+#    print("--------------------------")
+#    print(post)
+#    print(form)
+#    print(formset)
+#    print(spilloverformset)
+#
+#    print("--------------------------")
+#    print(request.method)
+#    print(form.is_valid())
+#
+#    if request.method == "POST" and form.is_valid():
+##    if request.method == "POST" and form.is_valid() and formset.is_valid() and spilloverformset.is_valid():
+##    if request.method == "POST" and form.is_valid() and formset.is_valid():
+#        form = PostForm(request.POST, request.FILES, instance=post)
+##        form = PostForm(request.POST)
+##        if form.is_valid():
+#
+##        formset = FileFormset(request.POST, files=request.FILES, instance=post)
+##        spilloverformset = SpilloverFormset(request.POST, files=request.FILES, instance=post)
+#
+#        print("--------------------------")
+#         print("1")
+##        if form.is_valid() or formset.is_valid() or spilloverformset.is_valid():
+#        if formset.is_valid() and spilloverformset.is_valid():
+##        if formset.is_valid()  and spilloverformset.is_valid():
+#            print("--------------------------")
+#            print("2") 
+#            post = form.save(commit=False)
+##            image = request.FILES['Image_file1']
+##            box = (200, 200, 200, 200)
+##            cropped = image.crop(box)
+##            post.image = cropped
+##            post.Image_file1 = request.FILES['Image_file1']
+##            post.Image_file1 = form.cleaned_data['Image_file1']
+#            post.author = request.user
+#            post.published_date = timezone.now()
+#            post.save()
+##            form.save()
+#            form.save_m2m()
+#            formset.save()
+#            spilloverformset.save()
+#            return redirect('posts:post_detail', pk=post.pk)
+##            return redirect('post_detail', post_id=post.pk)
+#
+#    else:
+#        form = PostForm( instance=post )
+#        print("--------------------------")
+#        print("3")
+#
+#        print("--------------------------")
+#        print("4")
+#    context = {
+#            'form': form,
+#            'formset': formset,
+#            'spilloverformset': spilloverformset,
+#            }
+##    return render(request, 'posts/post_edit.html', {'form': form})
+#
+#    return render(request, 'posts/post_edit.html', context)
 
 
 #@require_POST

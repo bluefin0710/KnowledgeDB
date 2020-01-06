@@ -1,0 +1,147 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- link rel="stylesheet" href="posts/css/sheet.css" -->
+    <link href="{% static "posts/css/sheet_new.css" %}" rel="stylesheet">
+
+    <title>技術処理票</title>
+
+</head>
+
+
+<body>
+
+    <section class="sheet">
+
+        <div class="row_1">
+
+            <h1 class="text-center">技術処理票</h1>
+
+        </div>
+
+        <div class="row_2">
+
+            <table class="summary">
+
+                <tbody>
+                	<tr>
+                		<th>機種名称</th>
+                		<td>{{ post.equipment }}</td>
+                		<th>登録日</th>
+                		<td>{{ post.created_at }}</td>
+                    </tr>
+                    <tr>
+                        <th>大分類</th>
+                		<td>{{ post.category }}</td>
+                		<th>小分類</th>
+                		<td>{{ post.subcategory }}</td>
+                	</tr>
+                    <tr>
+                		<th>発見概要</th>
+                		<td colspan="3">{{ post.overview }}</td>                		
+                	</tr>
+                	<tr>
+                		<th>発見日</th>
+                		<td>{{ post.discoverydate }}</td>
+                		<th>発見区分</th>
+                		<td>{{ post.discoverydiv }}</td>
+                	</tr>
+                	<tr>
+                		<th>状態</th>
+                		<td>
+                		{{ post.state }} 
+                		{% if post.completiondate %} 
+                    		/ {{ post.completiondate }}
+                    	{% endif %}
+                    	</td>
+                		<th>重要度</th>
+                		<td>{{ post.severity }}</td>
+                	</tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row_3">
+            <table class="content">
+                <tbody>
+                    <tr>
+                        <th>発見内容</th>
+                        <td>{{ post.content }}</td>
+                    </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div class="row_4">
+            <BR>
+            <h3>原因・対策</h3>
+        </div>
+
+
+        <div class="row_5">
+
+            <table class="detail">
+            	<tr>
+            		<th>原因区分・<br />
+                        原因内容</th>
+            		<td>【{{ post.causediv }}】<br />
+                		{{ post.cause }}</td>
+            	</tr>
+            	<tr>
+            		<th>市場への波及性</th>
+                {% if post.marketspillover_set.all %} 
+                    {% for ms_fields in post.marketspillover_set.all %}
+                        <td>理由:{{ ms_fields.reason }}<br />
+                            要因:{{ ms_fields.factor }}<br />
+                    		対象品出荷日:{{ ms_fields.shippingdate_start }}~{{ ms_fields.shippingdate_end }} 出荷先:{{ ms_fields.shipping }}<br />
+                    		対象製造番号:{{ ms_fields.serial_start }}~{{ ms_fields.serial_end }} 対象台数:{{ ms_fields.targetno }}<br />
+                    		他機種への影響:{{ ms_fields.influence }}</td>
+                    {% endfor %}
+                {% else %}
+                    <td></td>
+                {% endif %}
+            	</tr>
+            	<tr>
+            		<th>処置内容</th>
+            		<td>{{ post.counterplan }}</td>
+            	</tr>
+            	<tr>
+            		<th>チェックリスト</th>
+            		<td>{% for check in post.checklist.all %}{{ check }}、 {% endfor %}<br />
+                		{{ post.evidence }}</td>
+            	</tr>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            // 印刷画面を自動的に表示。印刷実行かキャンセルでウィンドウも閉じる。
+            setTimeout(function () {
+                window.print();
+                // window.close();
+            }, 200);
+        })
+
+</script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ from .models import (
 #            Checklist_A,
 #            ContentImage,
             ContentFile,
+            MarketSpillover,
             )
 
 from .models import (
@@ -19,7 +20,9 @@ from .models import (
             SEVERITY_CHOICES,
             CAUSEDIV_CHOICES,
             )
+from functools import partial
 
+DateInput = partial(forms.DateInput, {'class': 'datepicker'})
 
 #from .models import Image_File
 
@@ -111,10 +114,11 @@ class PostForm(ModelForm):
         widgets = {
 #            'subtitle': forms.TextInput(attrs={'size': 40}),
 #            'subcategory': forms.CheckboxInput(),
-            'discoverydate': forms.DateInput(format=('%Y-%m-%d'), 
-                                             attrs={'type':'date', 
-                                            'placeholder':'Select a date'},
-                                            ),
+#            'discoverydate': forms.DateInput(format=('%Y-%m-%d'), 
+#                                             attrs={'type':'date', 
+#                                            'placeholder':'Select a date'},
+#                                            ), 
+            'discoverydate': forms.DateInput(format=('%Y/%m/%d'), attrs={'class': 'datepicker', 'id': 'discoverydate'}),
             'overview': forms.Textarea(attrs={'cols': 80, 'rows': 2}),
             'content': forms.Textarea(attrs={'cols': 80, 'rows': 6}),
 #            'actual_file1': forms.ClearableFileInput(attrs={'multiple': True}),
@@ -126,10 +130,11 @@ class PostForm(ModelForm):
  #                                                       'class': 'form-check-input',
  #                                                       }),
  #           'checklist': forms.ModelMultipleChoiceField(queryset=Checklist_A.objects.all()),
-            'completiondate': forms.DateInput(format=('%Y-%m-%d'), 
-                                             attrs={'type':'date', 
-                                                    'placeholder':'Select a date'},
-                                            ),
+ #           'completiondate': forms.DateInput(format=('%Y-%m-%d'), 
+ #                                            attrs={'type':'date', 
+ #                                                   'placeholder':'Select a date'},
+ #                                           ),
+            'completiondate': forms.DateInput(format=('%Y/%m/%d'), attrs={'class': 'datepicker', 'id': 'completiondate'}),
          }
   
     def __init__(self, *args, **kwargs):
@@ -242,6 +247,28 @@ class SearchForm(forms.Form):
         label='登録者',
         required=False,  # 必須ではない                
     )
+    created_date = forms.CharField(
+        max_length=10, 
+        initial='',
+        label='登録日',
+        required=False,  # 必須ではない                
+    )
+    created_date_e = forms.CharField(
+        max_length=10, 
+        initial='',
+        label='登録日e',
+        required=False,  # 必須ではない                
+    )
+    discovery_date = forms.DateField(
+        initial='',
+        label='発見日',
+        required=False,  # 必須ではない                
+    )
+    discovery_date_e = forms.DateField(
+        initial='',
+        label='発見日e',
+        required=False,  # 必須ではない                
+    )
 
 
 #class Image_FileForm(ModelForm):
@@ -252,7 +279,9 @@ class SearchForm(forms.Form):
 #        model = Image_File
 #        fields = ('image',)
 
-class ContentFileForm(forms.ModelForm):
+#-----------------------------------------------------------------------------
+
+class ContentFileForm(ModelForm):
     class Meta:
         model=ContentFile
         fields = ('content_file',)
@@ -266,8 +295,68 @@ FileFormset = inlineformset_factory(
     form=ContentFileForm,
 #    form=PostForm,
     fields='__all__',
-    extra=3, 
+    extra=5, 
     max_num=5, 
     can_delete=True,
     )
 
+#-----------------------------------------------------------------------------
+
+class MarketSpilloverForm(ModelForm):
+    class Meta:
+        model=MarketSpillover
+        fields = (
+#                'post',
+                'reason',
+#                'factordiv',
+                'factor',
+                'shippingdate_start',
+                'shippingdate_end',
+                'shipping',
+                'serial_start',
+                'serial_end',
+                'targetno',
+                'influence',
+                )
+
+#        exclude = ('post',) 
+
+        widgets = {
+            'reason': forms.Textarea(attrs={'cols': 80, 'rows': 2}),
+#            'shippingdate_start': forms.DateInput(format=('%Y-%m-%d'), 
+#                                             attrs={'type':'date', 
+#                                            'placeholder':'Select a date'},
+#                                            ),
+#            'shippingdate_end': forms.DateInput(format=('%Y-%m-%d'), 
+#                                             attrs={'type':'date', 
+#                                            'placeholder':'Select a date'},
+#                                            ),
+
+            'factor': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'shippingdate_start': forms.DateInput(format=('%Y/%m/%d'), attrs={'class': 'datepicker', 'id': 'shippingdate_start'}),
+            'shippingdate_end': forms.DateInput(format=('%Y/%m/%d'), attrs={'class': 'datepicker', 'id': 'shippingdate_end'}),
+            'shipping': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'serial_start': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'serial_end': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'targetno': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'influence': forms.Textarea(attrs={'cols': 80, 'rows': 2}),
+            }
+
+
+
+    def __init__(self, *args, **kwargs):
+        super(MarketSpilloverForm, self).__init__(*args, **kwargs)
+
+SpilloverFormset = inlineformset_factory(
+    parent_model=Post,
+    model=MarketSpillover,
+    form=MarketSpilloverForm,
+#    form=PostForm,
+    fields='__all__',
+    extra=1, 
+    max_num=1, 
+    can_delete=True,
+    )
+
+
+  
