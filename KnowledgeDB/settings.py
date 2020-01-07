@@ -26,7 +26,8 @@ DEBUG = True
 #DEBUG = False
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
-ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1']
+#ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
 #ALLOWED_HOSTS = ['.pythonanywhere.com']
 #ALLOWED_HOSTS = ['*']
 
