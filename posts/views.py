@@ -743,7 +743,8 @@ class Searchlistview(ListView):
                                         & condition_author
                                         & condition_created_at
                                         & condition_discoverydate
-                                        )
+                                        & Q(is_public=True)
+                                        ).order_by('-id')
         else:
             # 何も返さない
             return Post.objects.none()
@@ -755,7 +756,8 @@ class SearchPostView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q', None)
         lookups = (
-             Q(equipment__name__icontains=query)
+             Q(is_public=True)
+             & (Q(equipment__name__icontains=query)
              | Q(category__name__icontains=query)
              | Q(subcategory__name__icontains=query)
              | Q(state__name__icontains=query)
@@ -771,10 +773,10 @@ class SearchPostView(ListView):
              | Q(counterplan__icontains=query)  
              | Q(checklist__name__icontains=query)
              | Q(author__username__icontains=query)
+             )
         )
         if query is not None:
             qs = super().get_queryset().filter(lookups).distinct()
-            return qs
         qs = super().get_queryset()
         return qs
 
@@ -796,7 +798,9 @@ class Indexlistview(ListView):
 
 #        return Post.objects.filter(published_date__lte=timezone.now()).order_by('-created_at')
 
-        return Post.objects.filter(published_date__lte=timezone.now()).order_by('-updated_at')
+#--2020-01-09 表示条件に「is_publicがTrue」を追加       
+        return Post.objects.filter(is_public=True, published_date__lte=timezone.now())
+#        return Post.objects.filter(published_date__lte=timezone.now()).order_by('-updated_at')
 
 #        published_date is Null, order by created_dateとしてリストを取得
 #        return Post.objects.filter(published_date__isnull=True).order_by('created_at')
@@ -808,7 +812,7 @@ class Indexlistview(ListView):
 #        context['id_sort_asc'] = Post.objects.filter.order_by('pk')
 #        context['id_sort_desc'] = Post.objects.filter.order_by('-pk') 
         return context
-
+ 
 
 #def index(request):
 #    # return HttpResponse("Hello World! このページは投稿のインデックスです。")
@@ -1121,7 +1125,10 @@ def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
 #    formset = FileFormset(request.POST or None, files=request.FILES or None, instance=post)
 #    formset.delete()
-    post.delete()
+#--2010-01-09 削除はdeleteではなくis_publicをFalseにして非表示とする処理に変更
+#    post.delete()
+    post.is_public=False
+    post.save()
     return redirect('posts:index_listview')
 
 #class PostDeleteView(DeleteView):
@@ -1160,7 +1167,9 @@ class EquipmentPostView(ListView):
     def get_queryset(self):
         equipment_slug = self.kwargs['equipment_slug']
         self.equipment = get_object_or_404(Equipment, slug=equipment_slug)
-        qs = super().get_queryset().filter(equipment=self.equipment)
+#--2020-01-09 表示条件に「is_publicがTrue」を追加
+#        qs = super().get_queryset().filter(equipment=self.equipment)
+        qs = super().get_queryset().filter(is_public=True, equipment=self.equipment)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -1177,7 +1186,9 @@ class CategoryPostView(ListView):
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
         self.category = get_object_or_404(Category, slug=category_slug)
-        qs = super().get_queryset().filter(category=self.category)
+#--2020-01-09 表示条件に「is_publicがTrue」を追加
+#        qs = super().get_queryset().filter(category=self.category)
+        qs = super().get_queryset().filter(is_public=True, category=self.category)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -1193,7 +1204,9 @@ class SubcategoryPostView(ListView):
     def get_queryset(self):
         subcategory_slug = self.kwargs['subcategory_slug']
         self.subcategory = get_object_or_404(Subcategory, slug=subcategory_slug)
-        qs = super().get_queryset().filter(subcategory=self.subcategory)
+#--2020-01-09 表示条件に「is_publicがTrue」を追加
+#        qs = super().get_queryset().filter(subcategory=self.subcategory)
+        qs = super().get_queryset().filter(is_public=True, subcategory=self.subcategory)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -1209,7 +1222,9 @@ class StatePostView(ListView):
     def get_queryset(self):
         state_slug = self.kwargs['state_slug']
         self.state = get_object_or_404(State, slug=state_slug)
-        qs = super().get_queryset().filter(state=self.state)
+#--2020-01-09 表示条件に「is_publicがTrue」を追加
+#        qs = super().get_queryset().filter(state=self.state)
+        qs = super().get_queryset().filter(is_public=True, state=self.state)
         return qs
 
     def get_context_data(self, **kwargs):
