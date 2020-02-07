@@ -1,18 +1,29 @@
-{% extends 'base.html' %}
-
-{% block title %}Login{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
-<div class="container container-fluid　 style="margin-top: 60px;">
+<div class="row">
+    <!-- 左側、ログインエリア -->
+    <div class="card col-md-6">
+        <div class="card-body">
+            <form action="{% url 'posts:login' %}" method="POST">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field }}
+                    {{ field.errors }}
+                    <hr>
+                {% endfor %}
+                <button type="submit" class="btn btn-success btn-lg btn-block" >ログイン</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+            </form>
+        </div>
+    </div><!-- 左側、ログインエリアおわり -->
 
-    <h2>技術管理票システム ログイン</h2>
-    <BR>
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
-            <p>※パスワードの変更またはパスワードを忘れた方はシステム管理者までお問い合わせ願います。</p>
-            <input type="submit" value="ログイン">
-        </form>
+    <!-- 右側、会員登録エリア -->
+    <div class="card col-md-6">
+        <div class="card-body">
+            <a href="{% url 'posts:user_create' %}" class="btn btn-success btn-lg btn-block" >新規登録</a><hr>
+            <a href="{% url 'posts:password_reset' %}" class="btn btn-success btn-lg btn-block" >パスワードを忘れた方</a>
+        </div>
+    </div><!-- 右側、会員登録エリアおわり -->
 </div>
-
 {% endblock %}
-

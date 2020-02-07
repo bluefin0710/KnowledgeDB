@@ -5,7 +5,10 @@
 {% block content %}
 
 <style>
+{% comment %}
  .container {
+{% endcomment %}
+ .container-fluid {
 <!-- border: 1px solid black; -->
  padding: 1rem;
  margin: 1rem;
@@ -13,243 +16,251 @@
  }
 </style>
 
+{% comment %}
 <div class="container container-fluid">
-
-<div class="col-sm-50 offset-sm-2">
-
-     <h3>検索条件</h3>
-    <form method="POST">
-        {% csrf_token %}
+{% endcomment %}
+<div class="container-fluid">
 
 {% comment %}
-        {% for field in test_form %}
-            <div class="form-group form-inline">
-                <label class="col-md-offset-2 col-md-3 control-label">{{ field.label }}:</label>
-                <div class="col-md-8">
-                    {{ field }}
+    <div class="col-sm-50 offset-sm-2">
+{% endcomment %}
+
+    <div class="col-lg-50 offset-lg-2">
+
+        <h3>検索条件</h3>
+        <form method="POST">
+            {% csrf_token %}
+
+{% comment %}
+            {% for field in test_form %}
+                <div class="form-group form-inline">
+                    <label class="col-md-offset-2 col-md-3 control-label">{{ field.label }}:</label>
+                    <div class="col-md-8">
+                        {{ field }}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
 {% endcomment %}
 
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.equipment.label }}:</label>
-            <div class="col-md-8">
-                {% if Equipment_DICT.items %}
-                    {% for K, V in Equipment_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Equipment_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.equipment.label }}:</label>
+                <div class="col-md-8">
+                    {% if Equipment_DICT.items %}
+                        {% for K, V in Equipment_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Equipment_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Equipment_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Equipment %}
                             <input type="checkbox" name="Equipment_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-                {% else %}
-                    {% for K in Equipment %}
-                        <input type="checkbox" name="Equipment_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
-            </div>
-         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.category.label }}:</label>
-            <div class="col-md-8">
-                {% if Category_DICT.items %}
-                    {% for K, V in Category_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Category_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
-                            <input type="checkbox" name="Category_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-                {% else %}
-                    {% for K in Category %}
-                        <input type="checkbox" name="Category_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
-            </div>
-         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.subcategory.label }}:</label>
-            <div class="col-md-8">
-                {% if Subcategory_DICT.items %}
-                    {% for K, V in Subcategory_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Subcategory_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
-                            <input type="checkbox" name="Subcategory_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-                {% else %}
-                    {% for K in Subcategory %}
-                        <input type="checkbox" name="Subcategory_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
-            </div>
-         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.state.label }}:</label>
-            <div class="col-md-8">
-                {% if State_DICT.items %}
-                    {% for K, V in State_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="State_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
-                            <input type="checkbox" name="State_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-                {% else %}
-                    {% for K in State %}
-                        <input type="checkbox" name="State_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
-            </div>
-         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.discoverydiv.label }}:</label>
-            <div class="col-md-8">
-                {% if Discoverydiv_DICT.items %}
-                    {% for K, V in Discoverydiv_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
-                            <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-                {% else %}
-                    {% for K in Discoverydiv %}
-                        <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
-            </div>
-         </div>
-
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.severity.label }}:</label>
-            <div class="col-md-8">
-                {% if Severity_DICT.items %}
-                    {% for K, V in Severity_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Severity_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
-                            <input type="checkbox" name="Severity_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-               {% else %}
-                    {% for K in Severity %}
-                        <input type="checkbox" name="Severity_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
+                        {% endfor %}
+                    {%endif%}
+                </div>
              </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.causediv.label }}:</label>
-            <div class="col-md-8">
-                {% if Causediv_DICT.items %}
-                    {% for K, V in Causediv_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Causediv_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.category.label }}:</label>
+                <div class="col-md-8">
+                    {% if Category_DICT.items %}
+                        {% for K, V in Category_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Category_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Category_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Category %}
+                            <input type="checkbox" name="Category_cb" value="{{ K }}">{{ K }}
+                        {% endfor %}
+                    {%endif%}
+                </div>
+             </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.subcategory.label }}:</label>
+                <div class="col-md-8">
+                    {% if Subcategory_DICT.items %}
+                        {% for K, V in Subcategory_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Subcategory_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Subcategory_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Subcategory %}
+                            <input type="checkbox" name="Subcategory_cb" value="{{ K }}">{{ K }}
+                        {% endfor %}
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.state.label }}:</label>
+                <div class="col-md-8">
+                    {% if State_DICT.items %}
+                        {% for K, V in State_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="State_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="State_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in State %}
+                            <input type="checkbox" name="State_cb" value="{{ K }}">{{ K }}
+                        {% endfor %}
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.discoverydiv.label }}:</label>
+                <div class="col-md-8">
+                    {% if Discoverydiv_DICT.items %}
+                        {% for K, V in Discoverydiv_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Discoverydiv %}
+                            <input type="checkbox" name="Discoverydiv_cb" value="{{ K }}">{{ K }}
+                        {% endfor %}
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.severity.label }}:</label>
+                <div class="col-md-8">
+                    {% if Severity_DICT.items %}
+                        {% for K, V in Severity_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Severity_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Severity_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Severity %}
+                            <input type="checkbox" name="Severity_cb" value="{{ K }}">{{ K }}
+                        {% endfor %}
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.causediv.label }}:</label>
+                <div class="col-md-8">
+                    {% if Causediv_DICT.items %}
+                        {% for K, V in Causediv_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Causediv_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Causediv_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Causediv %}
                             <input type="checkbox" name="Causediv_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-               {% else %}
-                    {% for K in Causediv %}
-                        <input type="checkbox" name="Causediv_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {%endif%}
+                        {% endfor %}
+                    {%endif%}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.checklist.label }}:</label>
-            <div class="col-md-8">
-                {% if Checklist_A_DICT.items %}
-                    {% for K, V in Checklist_A_DICT.items %}
-                        {% if V ==  1 %}
-                            <input type="checkbox" name="Checklist_A_cb" value="{{ K }}" checked>{{ K }}
-                        {% else %}
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.checklist.label }}:</label>
+                <div class="col-md-8">
+                    {% if Checklist_A_DICT.items %}
+                        {% for K, V in Checklist_A_DICT.items %}
+                            {% if V ==  1 %}
+                                <input type="checkbox" name="Checklist_A_cb" value="{{ K }}" checked>{{ K }}
+                            {% else %}
+                                <input type="checkbox" name="Checklist_A_cb" value="{{ K }}">{{ K }}
+                            {%　endif　%}
+                        {% endfor %}
+                    {% else %}
+                        {% for K in Checklist_A %}
                             <input type="checkbox" name="Checklist_A_cb" value="{{ K }}">{{ K }}
-                        {%　endif　%}
-                    {% endfor %}
-               {% else %}
-                    {% for K in Checklist_A %}
-                        <input type="checkbox" name="Checklist_A_cb" value="{{ K }}">{{ K }}
-                    {% endfor %}
-                {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.overview.label }}:</label>
-            <div class="col-md-8">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.overview.label }}:</label>
+                <div class="col-md-8">
                     {{ test_form.overview }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.content.label }}:</label>
-            <div class="col-md-8">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.content.label }}:</label>
+                <div class="col-md-8">
                     {{ test_form.content }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.cause.label }}:</label>
-            <div class="col-md-8">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.cause.label }}:</label>
+                <div class="col-md-8">
                     {{ test_form.cause }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.counterplan.label }}:</label>
-            <div class="col-md-8">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.counterplan.label }}:</label>
+                <div class="col-md-8">
                     {{ test_form.counterplan }}
+                </div>
             </div>
-        </div>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.author.label }}:</label>
-            <div class="col-md-8">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.author.label }}:</label>
+                <div class="col-md-8">
                     {{ test_form.author }}
+                </div>
             </div>
-        </div>
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.created_date.label }}:</label>
-            <div class="col-md-8">
-                <input type="text" class="datepicker" name="created_date_get" value="{{ test_form.created_date.value }}"> ～ 
-                <input type="text" class="datepicker" name="created_date_e_get" value="{{ test_form.created_date_e.value }}">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.created_date.label }}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="datepicker" name="created_date_get" value="{{ test_form.created_date.value }}"> ～ 
+                    <input type="text" class="datepicker" name="created_date_e_get" value="{{ test_form.created_date_e.value }}">
 
 {% comment %}                
-                <input type="date" name="created_date_get" id={{ test_form.created_date }} ～ 
-                <input type="date" name="created_date_e_get" id={{ test_form.created_date_e }}
-                <!-- 閉じカッコ　”>”がなぜが表示されてしまうためにタグの閉じカッコが無い状態で記述 -->
+                    <input type="date" name="created_date_get" id={{ test_form.created_date }} ～ 
+                    <input type="date" name="created_date_e_get" id={{ test_form.created_date_e }}
+                    <!-- 閉じカッコ　”>”がなぜが表示されてしまうためにタグの閉じカッコが無い状態で記述 -->
 {% endcomment %}                
+                </div>
             </div>
-        </div>
-        <BR/>
+            <BR/>
 
-        <div class="form-group form-inline">
-            <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.discovery_date.label }}:</label>
-            <div class="col-md-8">
-                <input type="text" class="datepicker" name="discovery_date_get" value="{{ test_form.discovery_date.value }}"> ～ 
-                <input type="text" class="datepicker" name="discovery_date_e_get" value="{{ test_form.discovery_date_e.value }}">
+            <div class="form-group form-inline">
+                <label class="col-md-offset-2 col-md-3 control-label">{{ test_form.discovery_date.label }}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="datepicker" name="discovery_date_get" value="{{ test_form.discovery_date.value }}"> ～ 
+                    <input type="text" class="datepicker" name="discovery_date_e_get" value="{{ test_form.discovery_date_e.value }}">
 {% comment %}                
-                <input type="date" name="discovery_date_get" id={{ test_form.discovery_date }} ～ 
-                <input type="date" name="discovery_date_e_get" id={{ test_form.discovery_date_e }}
+                    <input type="date" name="discovery_date_get" id={{ test_form.discovery_date }} ～ 
+                    <input type="date" name="discovery_date_e_get" id={{ test_form.discovery_date_e }}
 {% endcomment %}                
                 <!-- 閉じカッコ　”>”がなぜが表示されてしまうためにタグの閉じカッコが無い状態で記述 -->
+                </div>
             </div>
-        </div>
-        <BR/>
+            <BR/>
 
-        <input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="検索">
-    </form>
+            <input class="btn btn-success offset-md-8 col-md-3" type="submit" id="button" name="button" value="検索">
+        </form>
+    </div>
 
     <h3>検索結果</h3>
 
@@ -286,14 +297,12 @@
 
     </section>
 
-
     <div class="col-6 offset-3 justify-content-center">
         {% if is_paginated %}
             {% include 'pagination.html' %}
         {% endif %}
     </div>
 
-</div>
 </div>
 
 {% endblock %}

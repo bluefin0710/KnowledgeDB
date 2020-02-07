@@ -26,7 +26,8 @@ DEBUG = True
 #DEBUG = False
 
 #STATC_ROOT = os.path.join(BASE_DIR,'static')
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['localhost','127.0.0.1']
 #ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
 #ALLOWED_HOSTS = ['.pythonanywhere.com']
 #ALLOWED_HOSTS = ['*']
@@ -104,7 +105,8 @@ DATABASES = {
         'default': {
                 'ENGINE':'django.db.backends.mysql',
 #                 'NAME':'masterdb',
-                 'NAME':'knowledgedb',
+#                 'NAME':'knowledgedb',
+                 'NAME':'knowledgedb2',
                  'USER':'root',
                  'HOST':'127.0.0.1',
 #                 'NAME':'nmcmh01$MasterDB',
@@ -125,7 +127,7 @@ DATABASES = {
 ##password = PASSWORD
 ##default-character-set = utf8
 #
-##                         }
+###                         }
         }
 }
 
@@ -184,6 +186,23 @@ MEDIA_URL = '/media/'
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'static'),
 #]
+
+#e-mail setting
+#メールをコンソールに表示する（デバッグ用）
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# カスタムユーザーを使う
+AUTH_USER_MODEL = 'posts.User'
+
+# メールをコンソールに表示する
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# メールサーバーへの接続設定 gmailの場合
+#EMAIL_HOST = 'smtp.gmail.com'        #送信メールサーバー
+#EMAIL_PORT = 587                     #送信メールポート
+#EMAIL_HOST_USER = 'test@gmail.com'   #送信ユーザー
+#EMAIL_HOST_PASSWORD = 'testest' #送信パスワード
+#EMAIL_USE_TLS = True
 
 
 #

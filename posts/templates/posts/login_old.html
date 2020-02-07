@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+{% comment %}
+<div class="container container-fluid　 style="margin-top: 60px;">
+{% endcomment %}
+
+<div class="container style="margin-top: 60px;">
+
+    <h2>技術管理票システム ログイン</h2>
+    <BR>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+{% comment %}
+            <p>※パスワードの変更またはパスワードを忘れた方はシステム管理者までお問い合わせ願います。</p>
+{% endcomment %}
+
+            <input type="submit" class="btn btn-primary btn-lg" value="ログイン">
+            <a href="{% url 'posts:password_reset' %}" class="btn btn-primary btn-lg" >パスワードを忘れた方</a>
+        </form>
+</div>
+
+{% endblock %}
+

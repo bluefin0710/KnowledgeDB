@@ -1,6 +1,6 @@
 
 <style>
- .container {
+ .container-fluid {
 <!-- border: 1px solid black; -->
  padding: 1rem;
  margin: 1rem;
@@ -8,7 +8,7 @@
  }
 </style>
 
-             <table id="ListTable" class="table table-striped tagle-bordered">
+             <table id="ListTable" class="table table-striped tagle-bordered table-condensed">
                 <thead>
                     <tr>
                         <th>番号</th>
@@ -33,7 +33,9 @@
 
                 <tbody>
                     {% for post in object_list %}
+
                         {% if user.is_authenticated or post.is_public %}
+
                             <tr>
                                 <td><a href ="{% url 'posts:post_detail' post.id %}">{{ post.id }}</a></td>
                                 <td><a href ="{% url 'posts:post_detail' post.id %}">{{ post.equipment }}</a></td>
@@ -54,8 +56,8 @@
 -->
                             </tr>
                         {% endif %}
-                        {% empty %}
-                            <p><h3 class="mb-4">まだ登録はありません。</h3></p>
+                    {% empty %}
+                        <p><h3 class="mb-4">まだ登録はありません。</h3></p>
                     {% endfor %}
 
                 </tbody>
