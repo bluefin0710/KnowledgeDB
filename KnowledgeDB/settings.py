@@ -204,6 +204,26 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #EMAIL_HOST_PASSWORD = 'testest' #送信パスワード
 #EMAIL_USE_TLS = True
 
+# メールサーバーへの接続設定 DWP(Nイントラメールサーバー)の場合
+# ダミーアカウントの取得必要
+#--------------サーバー設定
+#   名前：ダミーアカウントと分かる名称など
+#　　　電子メール： ダミーアカウントメールアドレス
+#　　　アカウントの種類： POP3 か IMAP のどちらかを選択
+#　　　受信メールサーバ： mail.dbs.gisp.nec.com
+#　　　送信メールサーバ： mail.dbs.gisp.nec.com
+#　　　アカウント名 ：ダミーアカウントID
+#　　　　　　　　　　　　（会社コード--連番5桁）
+#　　　　　　　　　　例：000001--00001
+#　　　パスワード ：ダミーアカウントのパスワード
+#　　　パスワードを保存 する：チェックを入れる
+
+EMAIL_HOST = 'mail.dbs.gisp.nec.com'        #送信メールサーバー
+EMAIL_PORT = 587                     #送信メールポート 25?
+EMAIL_HOST_USER = '113220--XXXXX'   #送信ユーザー
+EMAIL_HOST_PASSWORD = 'hogehoge' #送信パスワード
+EMAIL_USE_TLS = True
+
 
 #
 #LOGGING = {
