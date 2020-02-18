@@ -189,13 +189,11 @@ MEDIA_URL = '/media/'
 
 #e-mail setting
 #メールをコンソールに表示する（デバッグ用）
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # カスタムユーザーを使う
 AUTH_USER_MODEL = 'posts.User'
 
-# メールをコンソールに表示する
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # メールサーバーへの接続設定 gmailの場合
 #EMAIL_HOST = 'smtp.gmail.com'        #送信メールサーバー
@@ -219,11 +217,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #　　　パスワードを保存 する：チェックを入れる
 
 EMAIL_HOST = 'mail.dbs.gisp.nec.com'        #送信メールサーバー
-EMAIL_PORT = 587                     #送信メールポート 25?
-EMAIL_HOST_USER = '113220--XXXXX'   #送信ユーザー
-EMAIL_HOST_PASSWORD = 'hogehoge' #送信パスワード
+EMAIL_PORT = 25                     #送信メールポート
+EMAIL_HOST_USER = '113220--21246'   #送信ユーザー
+EMAIL_HOST_PASSWORD = '6zIqGmPf' #送信パスワード
 EMAIL_USE_TLS = True
-
+DEFAULT_FROM_EMAIL = 'kms-info@dmy.magnus.nec.co.jp'
 
 #
 #LOGGING = {
